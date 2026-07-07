@@ -108,10 +108,14 @@
 
   /* R16 fixture boxes */
   .r16-node{cursor:pointer;}
-  .r16-badge{fill:#0e1724;stroke:#293a51;stroke-width:1.2;transition:stroke .2s,fill .2s;}
-  .r16-node:hover .r16-badge{stroke:rgba(224,184,74,.7);fill:#131e2e;}
-  .r16-divider{stroke:#1e2f44;stroke-width:1;}
-  .r16-name{font-family:'Oswald',sans-serif;font-size:10px;font-weight:500;fill:#92a0b3;pointer-events:none;}
+  .r16-badge{fill:var(--panel-2);stroke:var(--line);stroke-width:1.3;transition:stroke .2s,fill .2s;}
+  .r16-node:hover .r16-badge{stroke:var(--gold);fill:#16202d;}
+  .r16-badge.completed{stroke:var(--green-dim);fill:#0b1a14;}
+  .r16-node:hover .r16-badge.completed{stroke:var(--green);}
+  .r16-divider{stroke:#293a51;stroke-width:1;}
+  .r16-name{font-family:'Oswald',sans-serif;font-size:10.5px;font-weight:500;fill:var(--text);pointer-events:none;}
+  .r16-name.win{fill:var(--gold-soft);font-weight:600;}
+  .r16-score-tag{font-family:'Space Mono',monospace;font-size:8px;fill:var(--gold);pointer-events:none;}
   .r16-round-label{font-family:'Space Mono',monospace;font-size:7px;fill:#576678;pointer-events:none;}
 
   /* Leaderboard enhancements */
@@ -286,7 +290,7 @@ R32.forEach((m,i)=>{
   const div=document.createElementNS('http://www.w3.org/2000/svg','line');div.setAttribute('x1',(bx-BW/2+4).toFixed(1));div.setAttribute('x2',(bx+BW/2-4).toFixed(1));div.setAttribute('y1',by.toFixed(1));div.setAttribute('y2',by.toFixed(1));div.setAttribute('stroke','#293a51');div.setAttribute('stroke-width','1');g.appendChild(div);
   if(m.shortScore){const st=document.createElementNS('http://www.w3.org/2000/svg','text');st.setAttribute('x',(bx+BW/2-4).toFixed(1));st.setAttribute('y',by.toFixed(1));st.setAttribute('class','score-tag');st.setAttribute('text-anchor','end');st.setAttribute('dominant-baseline','central');st.textContent=m.shortScore;g.appendChild(st);}
   function addRow(flag,name,isWin,yOff){
-    const ft=document.createElementNS('http://www.w3.org/2000/svg','text');ft.setAttribute('x',(bx-BW/2+13).toFixed(1));ft.setAttribute('y',(by+yOff).toFixed(1));ft.setAttribute('text-anchor','middle');ft.setAttribute('dominant-baseline','central');ft.setAttribute('font-size','14');ft.textContent=flag;g.appendChild(ft);
+    const ft=document.createElementNS('http://www.w3.org/2000/svg','text');ft.setAttribute('x',(bx-BW/2+13).toFixed(1));ft.setAttribute('y',(by+yOff).toFixed(1));ft.setAttribute('text-anchor','middle');ft.setAttribute('dominant-baseline','central');ft.setAttribute('font-size','14');ft.setAttribute('font-family',"'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif");ft.textContent=flag;g.appendChild(ft);
     const nt=document.createElementNS('http://www.w3.org/2000/svg','text');nt.setAttribute('x',(bx-BW/2+26).toFixed(1));nt.setAttribute('y',(by+yOff).toFixed(1));nt.setAttribute('class','leaf-name'+(isWin?' win':''));nt.setAttribute('dominant-baseline','central');nt.textContent=name.length>10?name.slice(0,9)+'…':name;g.appendChild(nt);
   }
   addRow(m.flagA,m.teamA,m.winner===m.teamA,-9.5);addRow(m.flagB,m.teamB,m.winner===m.teamB,9.5);
@@ -307,8 +311,8 @@ R16.forEach((m,i)=>{
   const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');lbl.setAttribute('x',(bx+R16BW/2-3).toFixed(1));lbl.setAttribute('y',(by-R16BH/2+6).toFixed(1));lbl.setAttribute('fill','#576678');lbl.setAttribute('font-size','7');lbl.setAttribute('text-anchor','end');lbl.setAttribute('dominant-baseline','central');lbl.textContent='R16';g.appendChild(lbl);
   const divl=document.createElementNS('http://www.w3.org/2000/svg','line');divl.setAttribute('x1',(bx-R16BW/2+4).toFixed(1));divl.setAttribute('x2',(bx+R16BW/2-4).toFixed(1));divl.setAttribute('y1',by.toFixed(1));divl.setAttribute('y2',by.toFixed(1));divl.setAttribute('class','r16-divider');g.appendChild(divl);
   function addR16Row(flag,name,isWin,yOff){
-    const ft=document.createElementNS('http://www.w3.org/2000/svg','text');ft.setAttribute('x',(bx-R16BW/2+13).toFixed(1));ft.setAttribute('y',(by+yOff).toFixed(1));ft.setAttribute('text-anchor','middle');ft.setAttribute('dominant-baseline','central');ft.setAttribute('font-size','13');ft.textContent=flag;g.appendChild(ft);
-    const nt=document.createElementNS('http://www.w3.org/2000/svg','text');nt.setAttribute('x',(bx-R16BW/2+25).toFixed(1));nt.setAttribute('y',(by+yOff).toFixed(1));nt.setAttribute('class','r16-name'+(isWin?' win':''));nt.setAttribute('dominant-baseline','central');nt.textContent=name.length>11?name.slice(0,10)+'…':name;g.appendChild(nt);
+    const ft=document.createElementNS('http://www.w3.org/2000/svg','text');ft.setAttribute('x',(bx-R16BW/2+13).toFixed(1));ft.setAttribute('y',(by+yOff).toFixed(1));ft.setAttribute('text-anchor','middle');ft.setAttribute('dominant-baseline','central');ft.setAttribute('font-size','14');ft.setAttribute('font-family',"'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif");ft.textContent=flag;g.appendChild(ft);
+    const nt=document.createElementNS('http://www.w3.org/2000/svg','text');nt.setAttribute('x',(bx-R16BW/2+26).toFixed(1));nt.setAttribute('y',(by+yOff).toFixed(1));nt.setAttribute('class','r16-name'+(isWin?' win':''));nt.setAttribute('dominant-baseline','central');nt.textContent=name.length>11?name.slice(0,10)+'…':name;g.appendChild(nt);
   }
   addR16Row(m.flagA,m.teamA,m.winner===m.teamA,-9.5);addR16Row(m.flagB,m.teamB,m.winner===m.teamB,9.5);
   r16L.appendChild(g);
