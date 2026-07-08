@@ -134,6 +134,16 @@
   .tournament-badge{display:inline-flex;align-items:center;gap:8px;margin:10px auto 0;padding:8px 18px;border-radius:999px;border:1px solid var(--gold-dim);background:linear-gradient(135deg,rgba(224,184,74,.08),rgba(224,184,74,.02));font-family:'Space Mono',monospace;font-size:11px;color:var(--gold-dim);letter-spacing:.06em;}
   .tournament-badge .badge-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold);}
 
+
+  .qf-node{cursor:pointer;}
+  .qf-badge{fill:#100b1a;stroke:rgba(138,117,48,.5);stroke-width:1.3;transition:stroke .2s,fill .2s;}
+  .qf-node:hover .qf-badge{stroke:var(--gold);fill:#1a1426;}
+  .qf-badge.completed{stroke:var(--green-dim);fill:#0b1a14;}
+  .qf-node:hover .qf-badge.completed{stroke:var(--green);}
+  .qf-divider{stroke:#2a1f40;stroke-width:1;}
+  .qf-name{font-family:'Oswald',sans-serif;font-size:10px;font-weight:500;fill:var(--text-dim);pointer-events:none;}
+  .qf-name.win{fill:var(--gold-soft);font-weight:600;}
+  .qf-score-tag{font-family:'Space Mono',monospace;font-size:7.5px;fill:var(--gold);pointer-events:none;}
   footer{text-align:center;padding:22px 20px 44px;color:var(--text-dimmer);font-size:11px;font-family:'Space Mono',monospace;line-height:1.7;}
 </style>
 </head>
@@ -161,6 +171,7 @@
         <g id="connectorLayer"></g>
         <g id="leafLayer"></g>
         <g id="r16Layer"></g>
+        <g id="qfLayer"></g>
         <circle cx="460" cy="460" r="86" class="center-ring"/>
         <text x="460" y="438" text-anchor="middle" dominant-baseline="central" font-size="32">🏆</text>
         <text x="460" y="475" class="center-label">FINAL</text>
@@ -183,7 +194,7 @@
 <footer>Data accurate to 11AM IST, 7 July 2026 · Sources: FIFA, ESPN, CBS Sports, Yahoo Sports, Sky Sports, FourFourTwo<br>To refresh: ask Claude to rebuild with latest scores and stats.</footer>
 
 <script>
-const LAST_UPDATED="11AM IST, 7 July 2026";
+const LAST_UPDATED="11AM IST, 8 July 2026";
 
 // ── ROUND OF 32 — all 16 complete ─────────────────────────────────────────
 const R32=[
@@ -207,28 +218,14 @@ const R32=[
 
 // ── ROUND OF 16 — 6 of 8 complete, 2 yet to play at 11AM IST Jul 7 ──────────
 const R16=[
- {id:"r16-1",rnd:"Round of 16",matchNo:90,teamA:"Canada",teamB:"Morocco",flagA:"🇨🇦",flagB:"🇲🇦",venue:"NRG Stadium, Houston",utcKickoff:"2026-07-04T17:00:00Z",status:"FT",score:"0 – 3",shortScore:"0-3",winner:"Morocco",scorers:["Morocco: Azzedine Ounahi 50', 82'","Morocco: Soufiane Rahimi 90+'"],penalties:null,
-  highlights:[{icon:"⚽",text:"Canada were the better side in the first half but failed to take their chances. Five minutes into the second half Ounahi put Morocco ahead."},{icon:"⚽",text:"Ounahi scored his second on 82 minutes, converting a breakaway to put Morocco firmly in control."},{icon:"⚽",text:"Rahimi added a third in stoppage time, sliding his shot under Crépeau to seal a comfortable victory."},{icon:"📊",text:"Morocco's unbeaten run in normal time now extends to 35 matches. They face France in the quarterfinals."}],
-  fact:"Morocco's Azzedine Ounahi was the standout player of the game with two goals and total control of midfield. Canada's dream run as co-hosts came to an end — but they had broken multiple national records along the way."},
- {id:"r16-2",rnd:"Round of 16",matchNo:89,teamA:"France",teamB:"Paraguay",flagA:"🇫🇷",flagB:"🇵🇾",venue:"Lincoln Financial Field, Philadelphia",utcKickoff:"2026-07-04T21:00:00Z",status:"FT",score:"1 – 0",shortScore:"1-0",winner:"France",scorers:["France: Kylian Mbappé (pen, 2nd half)"],penalties:null,
-  highlights:[{icon:"😤",text:"Paraguay were disciplined and well-organised — France were made to work extremely hard."},{icon:"⚽",text:"Mbappé converted a second-half penalty to send France through 1-0. It was his 7th goal of the tournament."},{icon:"📊",text:"France had 72% possession but struggled to break Paraguay down for most of the match. Olise was close with multiple attempts."}],
-  fact:"Mbappé's penalty took him to 7 goals — drawing level with Messi and Haaland at the top of the Golden Boot. Paraguay's remarkable tournament run, which included eliminating Germany, finally ended."},
- {id:"r16-3",rnd:"Round of 16",matchNo:91,teamA:"Brazil",teamB:"Norway",flagA:"🇧🇷",flagB:"🇳🇴",venue:"MetLife Stadium, East Rutherford",utcKickoff:"2026-07-05T20:00:00Z",status:"FT",score:"0 – 2",shortScore:"0-2",winner:"Norway",scorers:["Norway: Erling Haaland 75' (header), 81' (long-range)"],penalties:null,
-  highlights:[{icon:"⚽",text:"Haaland climbed above Gabriel to head home the opener on 75 minutes as the game edged toward extra time."},{icon:"⚽",text:"Six minutes later, Haaland set himself up on the edge of the area and fired a stunning shot past Alisson for his second."},{icon:"📉",text:"Brazil, five-time World Cup winners, were shockingly eliminated. Their exit sparked enormous debate in South America."},{icon:"🌟",text:"Haaland now has 9 goals in the tournament — chasing Just Fontaine's all-time record of 13 in a single World Cup."}],
-  fact:"Norway's 2-0 win over Brazil is one of the biggest World Cup upsets since Senegal beat France in 2002. Haaland's brace took him to 9 tournament goals, putting him within sight of Just Fontaine's 1958 record of 13 in a single World Cup."},
- {id:"r16-4",rnd:"Round of 16",matchNo:92,teamA:"Mexico",teamB:"England",flagA:"🇲🇽",flagB:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",venue:"Estadio Azteca, Mexico City",utcKickoff:"2026-07-06T00:00:00Z",status:"FT",score:"2 – 3",shortScore:"2-3",winner:"England",scorers:["England: Jude Bellingham 8', 10'","Mexico: Julián Quiñones 44'","England: Harry Kane pen 57'","Mexico: (late goal)"],penalties:null,
-  highlights:[{icon:"⚽",text:"Bellingham stunned the Azteca by scoring twice in 98 seconds — 8th and 10th minutes. 80,000 fans fell silent."},{icon:"⚽",text:"Quiñones gave Mexico a lifeline just before half time, powering a shot past Pickford."},{icon:"🟥",text:"Jarrell Quansah was red-carded for England, making it 10 men for most of the second half."},{icon:"⚽",text:"Kane converted a penalty on 57 minutes to make it 3-1. Mexico pulled one back late but it wasn't enough."},{icon:"🏟️",text:"England's best away World Cup win — coming back from playing with 10 men at the Azteca against co-hosts."}],
-  fact:"England's win at the Azteca is their greatest World Cup victory on foreign soil since 1966. The last time these teams met at a World Cup was 1986 — Maradona's 'Hand of God' and 'Goal of the Century' eliminated England at this same stadium."},
- {id:"r16-5",rnd:"Round of 16",matchNo:93,teamA:"Spain",teamB:"Portugal",flagA:"🇪🇸",flagB:"🇵🇹",venue:"AT&T Stadium, Dallas",utcKickoff:"2026-07-06T19:00:00Z",status:"FT",score:"1 – 0",shortScore:"1-0",winner:"Spain",scorers:["Spain: Mikel Merino 90+1' (Ferran Torres assist)"],penalties:null,
-  highlights:[{icon:"🧤",text:"Diogo Costa was outstanding for Portugal — making saves from Yamal, Baena, and Oyarzabal to keep it goalless."},{icon:"💔",text:"Ronaldo and Bruno Fernandes were peripheral figures — Portugal rarely threatened despite the draw."},{icon:"⚽",text:"Merino, on as a substitute, received a pass from Torres and slid the ball past Costa in the 91st minute to break Portuguese hearts."},{icon:"😔",text:"Ronaldo's World Cup career is over. The oldest player at the tournament left without saying a word at full time."}],
-  fact:"Cristiano Ronaldo's dream of winning a World Cup ended with a whimper. Ronaldo became the first player to appear at six World Cups, but his final tournament ended with no goals in the knockout stage and a 1-0 defeat to neighbours Spain."},
- {id:"r16-6",rnd:"Round of 16",matchNo:94,teamA:"USA",teamB:"Belgium",flagA:"🇺🇸",flagB:"🇧🇪",venue:"Lumen Field, Seattle",utcKickoff:"2026-07-07T00:00:00Z",status:"FT",score:"1 – 4",shortScore:"1-4",winner:"Belgium",scorers:["Belgium: Charles De Ketelaere 9', 32'","USA: Malik Tillman 31' (free kick)","Belgium: Hans Vanaken 58'","Belgium: Romelu Lukaku 90+"],penalties:null,
-  highlights:[{icon:"⚽",text:"De Ketelaere tapped in from a Raskin cross on 9 minutes — Belgium started with intent."},{icon:"⚽",text:"Tillman levelled with a brilliant deflected free kick on 31 minutes — wild celebrations."},{icon:"⚽",text:"De Ketelaere scored again just a minute later to put Belgium back ahead — a sucker punch."},{icon:"⚽",text:"Vanaken made it 3-1 after a catastrophic mistake from keeper Freese and defender Ream."},{icon:"⚽",text:"Lukaku added a 4th in stoppage time — a ruthless, comprehensive Belgian victory."}],
-  fact:"Despite FIFA controversially rescinding Balogun's red-card suspension — reportedly after political pressure — it made no difference as Belgium ran out comfortable 4-1 winners. The US co-hosts are out, with all three co-host nations now eliminated."},
- {id:"r16-7",rnd:"Round of 16",matchNo:95,teamA:"Argentina",teamB:"Egypt",flagA:"🇦🇷",flagB:"🇪🇬",venue:"Mercedes-Benz Stadium, Atlanta",utcKickoff:"2026-07-07T16:00:00Z",status:"Scheduled",score:null,shortScore:null,winner:null,scorers:[],penalties:null,highlights:[],
-  fact:"Messi vs Salah — two of football's greatest of this generation. Messi leads the Golden Boot with 7 goals. Egypt reached the last 16 as outsiders and have the individual brilliance of Salah to cause Argentina problems."},
- {id:"r16-8",rnd:"Round of 16",matchNo:96,teamA:"Switzerland",teamB:"Colombia",flagA:"🇨🇭",flagB:"🇨🇴",venue:"BC Place, Vancouver",utcKickoff:"2026-07-07T20:00:00Z",status:"Scheduled",score:null,shortScore:null,winner:null,scorers:[],penalties:null,highlights:[],
-  fact:"Switzerland have won 10 consecutive matches and haven't conceded more than once in any knockout stage game. Colombia topped Group K without being troubled — Luis Diaz, Jhon Arias and James Rodríguez provide a dangerous attack."}
+ {id:"r16-1",rnd:"Round of 16",matchNo:90,teamA:"Canada",teamB:"Morocco",flagA:"🇨🇦",flagB:"🇲🇦",venue:"NRG Stadium, Houston",utcKickoff:"2026-07-04T17:00:00Z",status:"FT",score:"0 – 3",shortScore:"0-3",winner:"Morocco",scorers:["Morocco: Azzedine Ounahi 50', 82'","Morocco: Soufiane Rahimi 90+'"],penalties:null,highlights:[{icon:"⚽",text:"Five minutes into the second half Ounahi put Morocco ahead with a fine finish."},{icon:"⚽",text:"Ounahi scored his second on 82 minutes, converting a breakaway."},{icon:"⚽",text:"Rahimi added a third in stoppage time to seal it."}],fact:"Morocco became the first African nation to reach back-to-back World Cup quarterfinals. Ounahi was outstanding with 2 goals and total midfield control."},
+ {id:"r16-2",rnd:"Round of 16",matchNo:89,teamA:"France",teamB:"Paraguay",flagA:"🇫🇷",flagB:"🇵🇾",venue:"Lincoln Financial Field, Philadelphia",utcKickoff:"2026-07-04T21:00:00Z",status:"FT",score:"1 – 0",shortScore:"1-0",winner:"France",scorers:["France: Kylian Mbappé (pen, 2nd half)"],penalties:null,highlights:[{icon:"😤",text:"Paraguay were disciplined and well-organised — France struggled to break them down."},{icon:"⚽",text:"Mbappé converted a second-half penalty — his 7th of the tournament."},{icon:"📊",text:"France had 72% possession but Paraguay's defensive shape caused real problems."}],fact:"Paraguay's remarkable run — which included eliminating Germany — finally ended. Mbappé's penalty took him to 7, level with Haaland in the Golden Boot race."},
+ {id:"r16-3",rnd:"Round of 16",matchNo:91,teamA:"Brazil",teamB:"Norway",flagA:"🇧🇷",flagB:"🇳🇴",venue:"MetLife Stadium, East Rutherford",utcKickoff:"2026-07-05T20:00:00Z",status:"FT",score:"0 – 2",shortScore:"0-2",winner:"Norway",scorers:["Norway: Erling Haaland 75' (header), 81' (long-range)"],penalties:null,highlights:[{icon:"⚽",text:"Haaland climbed above Gabriel to head home on 75 minutes as the game edged toward extra time."},{icon:"⚽",text:"Six minutes later, Haaland fired a stunning long-range shot past Alisson for his second."},{icon:"📉",text:"Brazil — five-time World Cup winners — were shockingly eliminated."}],fact:"Norway's 2-0 win over Brazil is one of the biggest World Cup upsets since Senegal beat France in 2002. Haaland's brace took him to 7 tournament goals."},
+ {id:"r16-4",rnd:"Round of 16",matchNo:92,teamA:"Mexico",teamB:"England",flagA:"🇲🇽",flagB:"🇬🇧",venue:"Estadio Azteca, Mexico City",utcKickoff:"2026-07-06T00:00:00Z",status:"FT",score:"2 – 3",shortScore:"2-3",winner:"England",scorers:["England: Jude Bellingham 8', 10'","Mexico: Julián Quiñones 44'","England: Harry Kane pen 57'","Mexico: (late consolation)"],penalties:null,highlights:[{icon:"⚽",text:"Bellingham stunned the Azteca by scoring twice in 98 seconds — 8th and 10th minutes."},{icon:"⚽",text:"Quiñones gave Mexico a lifeline just before half time."},{icon:"🟥",text:"Jarrell Quansah was red-carded for England — they played 35+ minutes with 10 men."},{icon:"⚽",text:"Kane converted a penalty on 57 minutes to make it 3-1. Mexico scored late but couldn't complete the comeback."}],fact:"England's win at the Azteca is their greatest World Cup victory on foreign soil since 1966. The last time these nations met at a World Cup was 1986 — Maradona's Hand of God at this same stadium."},
+ {id:"r16-5",rnd:"Round of 16",matchNo:94,teamA:"Belgium",teamB:"USA",flagA:"🇧🇪",flagB:"🇺🇸",venue:"Lumen Field, Seattle",utcKickoff:"2026-07-07T00:00:00Z",status:"FT",score:"4 – 1",shortScore:"4-1",winner:"Belgium",scorers:["Belgium: Charles De Ketelaere 9', 33'","USA: Malik Tillman 31' (free kick)","Belgium: Hans Vanaken 57'","Belgium: Romelu Lukaku 90+3'"],penalties:null,highlights:[{icon:"⚽",text:"De Ketelaere tapped in on 9 minutes — Belgium started with real intent."},{icon:"⚽",text:"Tillman levelled with a brilliant deflected free kick on 31 minutes."},{icon:"⚽",text:"De Ketelaere scored again just 2 minutes later — a sucker punch."},{icon:"⚽",text:"Vanaken made it 3-1 after a horror mistake from keeper Freese. Lukaku added a 4th in stoppage time."}],fact:"Despite FIFA controversially rescinding Balogun's suspension after reported political pressure, it made no difference — Belgium ran out comfortable 4-1 winners. All three co-hosts are now eliminated."},
+ {id:"r16-6",rnd:"Round of 16",matchNo:93,teamA:"Spain",teamB:"Portugal",flagA:"🇪🇸",flagB:"🇵🇹",venue:"AT&T Stadium, Dallas",utcKickoff:"2026-07-06T19:00:00Z",status:"FT",score:"1 – 0",shortScore:"1-0",winner:"Spain",scorers:["Spain: Mikel Merino 90+1' (Ferran Torres assist)"],penalties:null,highlights:[{icon:"🧤",text:"Diogo Costa was outstanding — making saves from Yamal, Baena and Oyarzabal to keep it goalless."},{icon:"💔",text:"Ronaldo and Bruno Fernandes were peripheral figures throughout."},{icon:"⚽",text:"Merino, on as a substitute, received a pass from Torres and slid past Costa in the 91st minute."},{icon:"😔",text:"Ronaldo's World Cup career ended in silence — the oldest player in the tournament walked off without a word."}],fact:"Ronaldo's dream of winning a World Cup ended with a whimper. He became the first player to appear at six World Cups, but left with no knockout stage goals and a 1-0 defeat to neighbours Spain."},
+ {id:"r16-7",rnd:"Round of 16",matchNo:95,teamA:"Argentina",teamB:"Egypt",flagA:"🇦🇷",flagB:"🇪🇬",venue:"Mercedes-Benz Stadium, Atlanta",utcKickoff:"2026-07-07T16:00:00Z",status:"FT",score:"3 – 2",shortScore:"3-2",winner:"Argentina",scorers:["Egypt: Yasser Ibrahim 15'","Egypt: Mostafa Zico 67'","Argentina: Cristian Romero 79'","Argentina: Lionel Messi 83'","Argentina: Enzo Fernández 90+2'"],penalties:null,highlights:[{icon:"😱",text:"Egypt shocked Argentina — Yasser Ibrahim headed in on 15 minutes."},{icon:"🥅",text:"Messi missed a penalty in the 21st minute. Mostafa Zico extended Egypt's lead to 2-0 on 67 minutes."},{icon:"🔥",text:"Three goals in 13 minutes: Romero 79', Messi 83', Enzo Fernández 90+2' — one of the greatest World Cup comebacks ever."},{icon:"🐐",text:"Messi's goal was his 21st World Cup goal — extending his own all-time record."}],fact:"Argentina came back from 2-0 down with 11 minutes left — the greatest comeback in their World Cup history. Messi's 83rd-minute goal was his 21st World Cup goal, the new all-time record."},
+ {id:"r16-8",rnd:"Round of 16",matchNo:96,teamA:"Switzerland",teamB:"Colombia",flagA:"🇨🇭",flagB:"🇨🇴",venue:"BC Place, Vancouver",utcKickoff:"2026-07-07T20:00:00Z",status:"FT (Pens)",score:"0 – 0",shortScore:"0-0 (4-3p)",winner:"Switzerland",scorers:["Switzerland win 4-3 on penalties"],penalties:"Colombia 3-4 Switzerland",highlights:[{icon:"😴",text:"A largely uneventful 120 minutes — neither side could break the deadlock."},{icon:"🎯",text:"James Rodríguez came close on two occasions in extra time."},{icon:"🧤",text:"Switzerland's goalkeeper made two crucial saves in the shootout."},{icon:"✅",text:"Ruben Vargas converted the decisive penalty — Switzerland advance to face Argentina."}],fact:"Switzerland reach the World Cup quarterfinals for the first time since 1954. They will face defending champions Argentina — a side they have never beaten in a competitive fixture."}
 ];
 
 // ── GOLDEN BOOT — NBC Sports, FIFA, Sky Sports, ESPN as of 11AM IST Jul 7 ──
@@ -239,24 +236,24 @@ const R16=[
 // After Jul 6: Bellingham scored 2 vs Mexico → Bellingham on 4 goals
 // Kane scored penalty vs Mexico → Kane on 6 goals
 const TOP_SCORERS=[
- {rank:1,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",goals:7,note:"Leads Golden Boot on assists"},
- {rank:1,name:"Lionel Messi",country:"Argentina",flag:"🇦🇷",goals:7,note:"WC all-time record: 20"},
- {rank:1,name:"Erling Haaland",country:"Norway",flag:"🇳🇴",goals:7,note:"Debut World Cup"},
- {rank:4,name:"Harry Kane",country:"England",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",goals:6,note:"pen vs Mexico"},
+ {rank:1,name:"Lionel Messi",country:"Argentina",flag:"🇦🇷",goals:8,note:"WC all-time record: 21"},
+ {rank:2,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",goals:7,note:"Leads on assists"},
+ {rank:3,name:"Erling Haaland",country:"Norway",flag:"🇳🇴",goals:7,note:"Debut World Cup"},
+ {rank:4,name:"Harry Kane",country:"England",flag:"🇬🇧",goals:6,note:"Eng WC all-time top scorer"},
  {rank:5,name:"Ousmane Dembélé",country:"France",flag:"🇫🇷",goals:5,note:""},
- {rank:5,name:"Mikel Oyarzabal",country:"Spain",flag:"🇪🇸",goals:4,note:""},
- {rank:5,name:"Jude Bellingham",country:"England",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",goals:4,note:"Brace vs Mexico"},
- {rank:5,name:"Vinícius Júnior",country:"Brazil",flag:"🇧🇷",goals:4,note:"Eliminated"},
- {rank:5,name:"Ismael Saibari",country:"Morocco",flag:"🇲🇦",goals:4,note:""},
- {rank:5,name:"Azzedine Ounahi",country:"Morocco",flag:"🇲🇦",goals:3,note:"Brace vs Canada"}
+ {rank:5,name:"Azzedine Ounahi",country:"Morocco",flag:"🇲🇦",goals:5,note:"Brace vs Canada"},
+ {rank:7,name:"Mikel Oyarzabal",country:"Spain",flag:"🇪🇸",goals:4,note:""},
+ {rank:7,name:"Jude Bellingham",country:"England",flag:"🇬🇧",goals:4,note:"Brace vs Mexico"},
+ {rank:7,name:"Vinícius Júnior",country:"Brazil",flag:"🇧🇷",goals:4,note:"Eliminated"},
+ {rank:7,name:"Cristiano Ronaldo",country:"Portugal",flag:"🇵🇹",goals:3,note:"WC career ended"}
 ];
 const TOP_ASSISTS=[
- {rank:1,name:"Michael Olise",country:"France",flag:"🇫🇷",assists:6,note:"Equals Pelé's 1970 record!"},
- {rank:2,name:"Bruno Guimarães",country:"Brazil",flag:"🇧🇷",assists:4,note:"Eliminated"},
- {rank:3,name:"Martin Ødegaard",country:"Norway",flag:"🇳🇴",assists:3,note:""},
- {rank:3,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",assists:3,note:""},
- {rank:3,name:"Ferran Torres",country:"Spain",flag:"🇪🇸",assists:3,note:"Assist for Merino winner"},
- {rank:6,name:"Bukayo Saka",country:"England",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",assists:2,note:""},
+ {rank:1,name:"Michael Olise",country:"France",flag:"🇫🇷",assists:6,note:"Equals Pelé 1970 record"},
+ {rank:2,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",assists:3,note:"Golden Boot tiebreaker"},
+ {rank:2,name:"Martin Ødegaard",country:"Norway",flag:"🇳🇴",assists:3,note:""},
+ {rank:2,name:"Ferran Torres",country:"Spain",flag:"🇪🇸",assists:3,note:"Assist for Merino winner"},
+ {rank:5,name:"Bruno Guimarães",country:"Brazil",flag:"🇧🇷",assists:3,note:"Eliminated"},
+ {rank:6,name:"Bukayo Saka",country:"England",flag:"🇬🇧",assists:2,note:""},
  {rank:6,name:"Lamine Yamal",country:"Spain",flag:"🇪🇸",assists:2,note:""},
  {rank:6,name:"Erling Haaland",country:"Norway",flag:"🇳🇴",assists:2,note:""},
  {rank:6,name:"Lisandro Martínez",country:"Argentina",flag:"🇦🇷",assists:2,note:""},
@@ -320,7 +317,67 @@ R16.forEach((m,i)=>{
   }
 });
 
-const MAX_GOALS=7,MAX_ASSISTS=6;
+const MAX_GOALS=8,MAX_ASSISTS=6;
+
+
+// ── QUARTERFINALS ──
+const QF=[
+ {id:"qf-1",rnd:"Quarterfinal",matchNo:97,teamA:"France",teamB:"Morocco",flagA:"🇫🇷",flagB:"🇲🇦",venue:"Gillette Stadium, Boston",utcKickoff:"2026-07-09T20:00:00Z",status:"Scheduled",score:null,shortScore:null,winner:null,scorers:[],penalties:null,highlights:[],
+  fact:"A rematch of the iconic 2022 World Cup semifinal, which France won 2-0. Morocco are the first African nation to reach back-to-back World Cup quarterfinals. Mbappé leads the Golden Boot — this match gives him the chance to extend his lead."},
+ {id:"qf-2",rnd:"Quarterfinal",matchNo:98,teamA:"Spain",teamB:"Belgium",flagA:"🇪🇸",flagB:"🇧🇪",venue:"SoFi Stadium, Inglewood",utcKickoff:"2026-07-10T19:00:00Z",status:"Scheduled",score:null,shortScore:null,winner:null,scorers:[],penalties:null,highlights:[],
+  fact:"The winner faces France or Morocco in the Dallas semifinal on July 14. Lamine Yamal vs Kevin De Bruyne is the most anticipated individual duel of the quarterfinals. Spain eliminated Portugal in stoppage time; Belgium demolished the USA 4-1."},
+ {id:"qf-3",rnd:"Quarterfinal",matchNo:99,teamA:"Norway",teamB:"England",flagA:"🇳🇴",flagB:"🇬🇧",venue:"Hard Rock Stadium, Miami",utcKickoff:"2026-07-11T21:00:00Z",status:"Scheduled",score:null,shortScore:null,winner:null,scorers:[],penalties:null,highlights:[],
+  fact:"Haaland vs Kane — two of the greatest strikers of their generation, on 7 and 6 World Cup goals respectively. The winner faces Argentina or Switzerland in Atlanta on July 15. Norway's win over Brazil was one of the tournament's biggest upsets."},
+ {id:"qf-4",rnd:"Quarterfinal",matchNo:100,teamA:"Argentina",teamB:"Switzerland",flagA:"🇦🇷",flagB:"🇨🇭",venue:"Arrowhead Stadium, Kansas City",utcKickoff:"2026-07-12T01:00:00Z",status:"Scheduled",score:null,shortScore:null,winner:null,scorers:[],penalties:null,highlights:[],
+  fact:"Argentina survived an extraordinary 2-0 deficit against Egypt with 11 minutes left — Messi's 21st World Cup goal leading the comeback. Argentina have never lost to Switzerland in a competitive fixture across their entire history."}
+];
+
+// ── DRAW QF BOXES ──
+const qfL=document.getElementById('qfLayer');
+const QFBW=116,QFBH=38;
+const QF_BOX_CENTERS=qfA.map(a=>{const pt=polar(Rqf,a),rad=(a-90)*Math.PI/180;return{bx:pt.x+Math.cos(rad)*26,by:pt.y+Math.sin(rad)*26,a};});
+QF.forEach((m,i)=>{
+  const {bx,by}=QF_BOX_CENTERS[i];
+  const done=m.status!=='Scheduled';
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  g.setAttribute('class','qf-node');
+  g.addEventListener('click',()=>openPanel('qf',m.id));
+  const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  rect.setAttribute('x',(bx-QFBW/2).toFixed(1));rect.setAttribute('y',(by-QFBH/2).toFixed(1));
+  rect.setAttribute('width',QFBW);rect.setAttribute('height',QFBH);rect.setAttribute('rx',7);
+  rect.setAttribute('class','qf-badge'+(done?' completed':''));
+  g.appendChild(rect);
+  const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
+  lbl.setAttribute('x',(bx+QFBW/2-3).toFixed(1));lbl.setAttribute('y',(by-QFBH/2+6).toFixed(1));
+  lbl.setAttribute('fill','#7a652c');lbl.setAttribute('font-size','7');
+  lbl.setAttribute('text-anchor','end');lbl.setAttribute('dominant-baseline','central');
+  lbl.textContent='QF';g.appendChild(lbl);
+  if(m.shortScore){
+    const st=document.createElementNS('http://www.w3.org/2000/svg','text');
+    st.setAttribute('x',(bx+QFBW/2-4).toFixed(1));st.setAttribute('y',by.toFixed(1));
+    st.setAttribute('class','qf-score-tag');st.setAttribute('text-anchor','end');
+    st.setAttribute('dominant-baseline','central');st.textContent=m.shortScore;g.appendChild(st);
+  }
+  const divl=document.createElementNS('http://www.w3.org/2000/svg','line');
+  divl.setAttribute('x1',(bx-QFBW/2+4).toFixed(1));divl.setAttribute('x2',(bx+QFBW/2-4).toFixed(1));
+  divl.setAttribute('y1',by.toFixed(1));divl.setAttribute('y2',by.toFixed(1));
+  divl.setAttribute('stroke','#2a1f40');divl.setAttribute('stroke-width','1');g.appendChild(divl);
+  function addQFRow(flag,name,isWin,yOff){
+    const ft=document.createElementNS('http://www.w3.org/2000/svg','text');
+    ft.setAttribute('x',(bx-QFBW/2+12).toFixed(1));ft.setAttribute('y',(by+yOff).toFixed(1));
+    ft.setAttribute('text-anchor','middle');ft.setAttribute('dominant-baseline','central');
+    ft.setAttribute('font-size','12');
+    ft.setAttribute('font-family',"'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif");
+    ft.textContent=flag;g.appendChild(ft);
+    const nt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    nt.setAttribute('x',(bx-QFBW/2+23).toFixed(1));nt.setAttribute('y',(by+yOff).toFixed(1));
+    nt.setAttribute('class','qf-name'+(isWin?' win':''));nt.setAttribute('dominant-baseline','central');
+    nt.textContent=name.length>11?name.slice(0,10)+'…':name;g.appendChild(nt);
+  }
+  addQFRow(m.flagA,m.teamA,m.winner===m.teamA,-9);
+  addQFRow(m.flagB,m.teamB,m.winner===m.teamB,9);
+  qfL.appendChild(g);
+});
 function renderLeaders(list,id,key,max){
   const el=document.getElementById(id);
   list.forEach((p,i)=>{
@@ -345,7 +402,7 @@ function toIST(utc){
 
 const overlay=document.getElementById('panelOverlay'),panelEl=document.getElementById('matchPanel');
 function openPanel(stage,id){
-  const datasets={'r32':R32,'r16':R16};
+  const datasets={'r32':R32,'r16':R16,'qf':QF};
   const m=(datasets[stage]||[]).find(x=>x.id===id);
   if(!m)return;
   const ist=toIST(m.utcKickoff),sched=m.status==='Scheduled';
