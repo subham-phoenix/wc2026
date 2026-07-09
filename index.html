@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>World Cup 2026 — Knockout Bracket</title>
+<title>FIFA World Cup — Knockout Brackets 2002–2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -12,41 +12,84 @@
   html,body{background:#05070b;color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
   body{background-image:radial-gradient(circle at 50% 38%,rgba(224,184,74,.10) 0%,rgba(224,184,74,.03) 28%,transparent 55%),radial-gradient(circle at 50% 50%,#0a1018 0%,#05070b 70%);}
   ::selection{background:var(--gold);color:#05070b;}
-  header{padding:24px 20px 12px;text-align:center;}
-  .eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:8px;}
-  h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(24px,4.5vw,46px);letter-spacing:.02em;text-transform:uppercase;background:linear-gradient(180deg,#f7e8b5,var(--gold) 55%,var(--gold-dim));-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .sub{color:var(--text-dim);font-size:13px;margin-top:5px;}
-  .meta-row{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;}
-  .updated-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-dimmer);background:rgba(255,255,255,.02);}
+
+  /* ── TABS ── */
+  .page-wrap{display:flex;min-height:100vh;}
+  .tab-rail{
+    width:72px;flex-shrink:0;
+    background:linear-gradient(180deg,#080d14,#05070b);
+    border-right:1px solid var(--line);
+    display:flex;flex-direction:column;align-items:center;
+    padding:14px 0;gap:6px;position:sticky;top:0;height:100vh;overflow-y:auto;
+  }
+  .tab-rail-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.1em;color:var(--text-dimmer);text-transform:uppercase;margin-bottom:4px;writing-mode:vertical-rl;transform:rotate(180deg);}
+  .tab-btn{
+    width:52px;height:52px;border-radius:10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    background:transparent;border:1px solid transparent;
+    cursor:pointer;transition:all .2s;
+    font-family:'Oswald',sans-serif;
+  }
+  .tab-btn:hover{background:rgba(224,184,74,.08);border-color:var(--line);}
+  .tab-btn.active{background:rgba(224,184,74,.12);border-color:var(--gold-dim);}
+  .tab-btn .tab-year{font-size:14px;font-weight:700;color:var(--text-dim);line-height:1;}
+  .tab-btn.active .tab-year{color:var(--gold);}
+  .tab-btn .tab-flag{font-size:14px;line-height:1;}
+  .tab-btn .tab-host{font-family:'Space Mono',monospace;font-size:7px;color:var(--text-dimmer);text-align:center;line-height:1.2;}
+  .tab-btn.active .tab-host{color:var(--gold-dim);}
+  .tab-divider{width:36px;height:1px;background:var(--line);margin:4px 0;}
+
+  /* ── MAIN CONTENT ── */
+  .main-content{flex:1;min-width:0;}
+  .tournament-view{display:none;}
+  .tournament-view.active{display:block;}
+
+  header{padding:22px 20px 10px;text-align:center;}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:7px;}
+  h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(22px,4vw,44px);letter-spacing:.02em;text-transform:uppercase;background:linear-gradient(180deg,#f7e8b5,var(--gold) 55%,var(--gold-dim));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sub{color:var(--text-dim);font-size:13px;margin-top:4px;}
+  .tournament-badge{display:inline-flex;align-items:center;gap:8px;margin:10px auto 0;padding:6px 16px;border-radius:999px;border:1px solid var(--gold-dim);background:linear-gradient(135deg,rgba(224,184,74,.08),rgba(224,184,74,.02));font-family:'Space Mono',monospace;font-size:11px;color:var(--gold-dim);letter-spacing:.06em;}
+  .tournament-badge .badge-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold);}
+  .meta-row{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap;}
+  .updated-pill{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-dimmer);background:rgba(255,255,255,.02);}
   .updated-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;}
+  .updated-pill .dot.grey{background:var(--text-dimmer);box-shadow:none;animation:none;}
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-  .refresh-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1px solid var(--gold-dim);background:transparent;color:var(--gold);font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;transition:background .2s,color .2s;}
+  .refresh-btn{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;border:1px solid var(--gold-dim);background:transparent;color:var(--gold);font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;transition:background .2s,color .2s;}
   .refresh-btn:hover{background:var(--gold);color:#05070b;}
-  .layout{display:grid;grid-template-columns:220px minmax(0,1fr) 220px;gap:14px;max-width:1460px;margin:0 auto;padding:6px 16px 50px;align-items:start;}
-  @media(max-width:1080px){.layout{grid-template-columns:1fr;}}
+  .refresh-btn.disabled{border-color:var(--line);color:var(--text-dimmer);cursor:not-allowed;opacity:.5;}
+  .refresh-btn.disabled:hover{background:transparent;color:var(--text-dimmer);}
+
+  .layout{display:grid;grid-template-columns:220px minmax(0,1fr) 220px;gap:14px;max-width:1300px;margin:0 auto;padding:6px 16px 50px;align-items:start;}
+  @media(max-width:1100px){.layout{grid-template-columns:1fr;}}
+
   .rail{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--line);border-radius:14px;padding:14px 12px;position:sticky;top:14px;}
-  @media(max-width:1080px){.rail{position:static;}}
+  @media(max-width:1100px){.rail{position:static;}}
   .rail h2{font-family:'Oswald',sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--gold);border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
   .rail .tag{font-family:'Space Mono',monospace;font-size:8.5px;color:var(--text-dimmer);text-transform:none;}
   .leader-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-radius:8px;transition:background .15s;}
   .leader-row:hover{background:rgba(224,184,74,.07);}
-  .leader-rank{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;color:var(--text-dimmer);width:16px;flex-shrink:0;}
-  .leader-row:nth-child(2) .leader-rank{color:var(--gold);}
-  .leader-flag{font-size:16px;flex-shrink:0;}
+  .leader-rank{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;color:var(--text-dimmer);width:18px;flex-shrink:0;}
+  .leader-flag{font-size:16px;flex-shrink:0;min-width:20px;text-align:center;}
   .leader-info{flex:1;min-width:0;}
   .leader-name{font-size:11.5px;font-weight:600;line-height:1.2;}
   .leader-country{font-size:10px;color:var(--text-dimmer);}
+  .bar-bg{height:2px;background:rgba(255,255,255,.06);border-radius:1px;margin-top:3px;}
+  .bar-fill{height:2px;border-radius:1px;background:linear-gradient(90deg,var(--gold-dim),var(--gold));}
   .leader-stat{font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;color:var(--text);flex-shrink:0;text-align:center;}
   .leader-stat span{font-size:8px;color:var(--text-dimmer);font-family:'Inter';display:block;}
+
   .wheel-wrap{display:flex;flex-direction:column;align-items:center;}
-  .wheel-stage{position:relative;width:100%;max-width:940px;}
+  .wheel-stage{position:relative;width:100%;max-width:880px;}
   svg.bracket{width:100%;height:auto;display:block;overflow:visible;}
+
   .tie-line{fill:none;stroke:var(--line);stroke-width:1.4;}
   .spoke-line{fill:none;stroke:var(--line);stroke-width:1.4;}
   .tie-line.won{stroke:rgba(224,184,74,.5);stroke-width:2;}
   .spoke-line.won{stroke:rgba(224,184,74,.5);stroke-width:2;}
   .joint-dot{fill:var(--text-dimmer);}
   .joint-dot.won{fill:var(--gold);}
+
   .leaf-node{cursor:pointer;}
   .leaf-badge{fill:var(--panel-2);stroke:var(--line);stroke-width:1.3;transition:stroke .2s,fill .2s;}
   .leaf-node:hover .leaf-badge{stroke:var(--gold);fill:#16202d;}
@@ -55,20 +98,39 @@
   .leaf-name{font-family:'Oswald',sans-serif;font-size:10.5px;font-weight:500;fill:var(--text);pointer-events:none;}
   .leaf-name.win{fill:var(--gold-soft);font-weight:600;}
   .score-tag{font-family:'Space Mono',monospace;font-size:8px;fill:var(--gold);pointer-events:none;}
-  .winner-badge{cursor:pointer;}
-  .winner-bg{fill:#0f1e14;stroke:rgba(34,169,115,.55);stroke-width:1.2;transition:stroke .2s;}
-  .winner-badge:hover .winner-bg{stroke:var(--green);}
-  .winner-name{font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;fill:var(--gold-soft);pointer-events:none;}
+
+  .r16-node{cursor:pointer;}
+  .r16-badge{fill:var(--panel-2);stroke:var(--line);stroke-width:1.3;transition:stroke .2s,fill .2s;}
+  .r16-node:hover .r16-badge{stroke:var(--gold);fill:#16202d;}
+  .r16-badge.completed{stroke:var(--green-dim);fill:#0b1a14;}
+  .r16-node:hover .r16-badge.completed{stroke:var(--green);}
+  .r16-divider{stroke:#293a51;stroke-width:1;}
+  .r16-name{font-family:'Oswald',sans-serif;font-size:10.5px;font-weight:500;fill:var(--text);pointer-events:none;}
+  .r16-name.win{fill:var(--gold-soft);font-weight:600;}
+  .r16-score-tag{font-family:'Space Mono',monospace;font-size:8px;fill:var(--gold);pointer-events:none;}
+
+  .qf-node{cursor:pointer;}
+  .qf-badge{fill:#100b1a;stroke:rgba(138,117,48,.5);stroke-width:1.3;transition:stroke .2s,fill .2s;}
+  .qf-node:hover .qf-badge{stroke:var(--gold);fill:#1a1426;}
+  .qf-badge.completed{stroke:var(--green-dim);fill:#0b1a14;}
+  .qf-node:hover .qf-badge.completed{stroke:var(--green);}
+  .qf-divider{stroke:#2a1f40;stroke-width:1;}
+  .qf-name{font-family:'Oswald',sans-serif;font-size:10px;font-weight:500;fill:var(--text-dim);pointer-events:none;}
+  .qf-name.win{fill:var(--gold-soft);font-weight:600;}
+  .qf-score-tag{font-family:'Space Mono',monospace;font-size:7.5px;fill:var(--gold);pointer-events:none;}
+
   .center-ring{fill:url(#trophyGlow);stroke:var(--gold-dim);stroke-width:1.4;}
-  .center-label{font-family:'Oswald',sans-serif;font-size:13px;fill:var(--gold);text-anchor:middle;letter-spacing:.1em;}
-  .center-sub{font-family:'Space Mono',monospace;font-size:8.5px;fill:var(--text-dimmer);text-anchor:middle;}
-  .legend{display:flex;gap:14px;justify-content:center;margin-top:10px;flex-wrap:wrap;}
+  .center-label{font-family:'Oswald',sans-serif;font-size:12px;fill:var(--gold);text-anchor:middle;letter-spacing:.1em;}
+  .center-sub{font-family:'Space Mono',monospace;font-size:8px;fill:var(--text-dimmer);text-anchor:middle;}
+
+  .legend{display:flex;gap:12px;justify-content:center;margin-top:10px;flex-wrap:wrap;}
   .legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-dim);}
   .legend-line{width:16px;height:0;border-top:2px solid;}
   .legend-sq{width:10px;height:10px;border-radius:3px;}
+
   .panel-overlay{position:fixed;inset:0;background:rgba(2,4,8,.82);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
   .panel-overlay.open{display:flex;}
-  .match-panel{width:100%;max-width:500px;background:linear-gradient(180deg,#121c28,#0a0f17);border:1px solid var(--line);border-radius:18px;padding:24px 22px;max-height:90vh;overflow-y:auto;animation:slideUp .22s ease;box-shadow:0 30px 80px rgba(0,0,0,.7);}
+  .match-panel{width:100%;max-width:480px;background:linear-gradient(180deg,#121c28,#0a0f17);border:1px solid var(--line);border-radius:18px;padding:24px 22px;max-height:90vh;overflow-y:auto;animation:slideUp .22s ease;box-shadow:0 30px 80px rgba(0,0,0,.7);}
   @keyframes slideUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
   .panel-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
   .panel-round{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold-dim);text-transform:uppercase;letter-spacing:.1em;}
@@ -103,320 +165,847 @@
   .highlights-list li:last-child{border-bottom:none;}
   .hl-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
   .hl-text{font-size:12px;line-height:1.5;color:var(--text-dim);}
-  .fact-box{background:linear-gradient(135deg,rgba(224,184,74,.09),rgba(224,184,74,.02));border:1px solid rgba(224,184,74,.25);border-radius:12px;padding:12px 14px;font-size:12px;line-height:1.55;color:#f0e8cc;}
-  .fact-box .fact-tag{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:5px;}
-
-  /* R16 fixture boxes */
-  .r16-node{cursor:pointer;}
-  .r16-badge{fill:var(--panel-2);stroke:var(--line);stroke-width:1.3;transition:stroke .2s,fill .2s;}
-  .r16-node:hover .r16-badge{stroke:var(--gold);fill:#16202d;}
-  .r16-badge.completed{stroke:var(--green-dim);fill:#0b1a14;}
-  .r16-node:hover .r16-badge.completed{stroke:var(--green);}
-  .r16-divider{stroke:#293a51;stroke-width:1;}
-  .r16-name{font-family:'Oswald',sans-serif;font-size:10.5px;font-weight:500;fill:var(--text);pointer-events:none;}
-  .r16-name.win{fill:var(--gold-soft);font-weight:600;}
-  .r16-score-tag{font-family:'Space Mono',monospace;font-size:8px;fill:var(--gold);pointer-events:none;}
-  .r16-round-label{font-family:'Space Mono',monospace;font-size:7px;fill:#576678;pointer-events:none;}
-
-  /* Leaderboard enhancements */
-  .leader-row{position:relative;}
-  .leader-row:nth-child(2) .leader-stat{color:var(--gold);}
-  .leader-row:nth-child(3) .leader-stat{color:#c0c0c0;}
-  .leader-row:nth-child(4) .leader-stat{color:#cd7f32;}
-  .bar-bg{height:2px;background:rgba(255,255,255,.06);border-radius:1px;margin-top:3px;}
-  .bar-fill{height:2px;border-radius:1px;background:linear-gradient(90deg,var(--gold-dim),var(--gold));}
-  .leader-row:nth-child(2) .bar-fill{background:linear-gradient(90deg,#caa23a,var(--gold-soft));}
-  .leader-row:nth-child(3) .bar-fill{background:linear-gradient(90deg,#888,#c0c0c0);}
-  .leader-row:nth-child(4) .bar-fill{background:linear-gradient(90deg,#7a5020,#cd7f32);}
-  .rail-section-title{font-family:'Space Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--text-dimmer);padding:8px 5px 4px;border-top:1px solid var(--line);margin-top:6px;}
 
 
-  .tournament-badge{display:inline-flex;align-items:center;gap:8px;margin:10px auto 0;padding:8px 18px;border-radius:999px;border:1px solid var(--gold-dim);background:linear-gradient(135deg,rgba(224,184,74,.08),rgba(224,184,74,.02));font-family:'Space Mono',monospace;font-size:11px;color:var(--gold-dim);letter-spacing:.06em;}
-  .tournament-badge .badge-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold);}
+  /* ── AWARDS STRIP ── */
+  .awards-strip{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:12px 16px 4px;}
+  .award-card{display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,rgba(224,184,74,.09),rgba(224,184,74,.02));border:1px solid rgba(224,184,74,.22);border-radius:10px;padding:8px 13px;min-width:160px;}
+  .award-icon{font-size:20px;flex-shrink:0;}
+  .award-info{flex:1;min-width:0;}
+  .award-label{font-family:'Space Mono',monospace;font-size:8px;color:var(--gold-dim);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:2px;}
+  .award-name{font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--text);line-height:1.2;}
+  .award-country{font-size:10px;color:var(--text-dimmer);}
 
-
-  .qf-node{cursor:pointer;}
-  .qf-badge{fill:#100b1a;stroke:rgba(138,117,48,.5);stroke-width:1.3;transition:stroke .2s,fill .2s;}
-  .qf-node:hover .qf-badge{stroke:var(--gold);fill:#1a1426;}
-  .qf-badge.completed{stroke:var(--green-dim);fill:#0b1a14;}
-  .qf-node:hover .qf-badge.completed{stroke:var(--green);}
-  .qf-divider{stroke:#2a1f40;stroke-width:1;}
-  .qf-name{font-family:'Oswald',sans-serif;font-size:10px;font-weight:500;fill:var(--text-dim);pointer-events:none;}
-  .qf-name.win{fill:var(--gold-soft);font-weight:600;}
-  .qf-score-tag{font-family:'Space Mono',monospace;font-size:7.5px;fill:var(--gold);pointer-events:none;}
-  footer{text-align:center;padding:22px 20px 44px;color:var(--text-dimmer);font-size:11px;font-family:'Space Mono',monospace;line-height:1.7;}
+  .svgWrap{width:100%;}
+  .svgWrap svg{width:100%;height:auto;display:block;overflow:visible;}
+  footer{text-align:center;padding:20px 20px 42px;color:var(--text-dimmer);font-size:11px;font-family:'Space Mono',monospace;line-height:1.7;}
 </style>
 </head>
 <body>
-<header>
-  <div class="eyebrow">Canada · Mexico · United States</div>
-  <h1>World Cup 2026</h1>
-  <div class="sub">Knockout Bracket — Round of 32 to the Final</div>
-  <div style="margin-top:10px;"><span class="tournament-badge"><span class="badge-dot"></span>FIFA World Cup 2026™<span class="badge-dot"></span></span></div>
-  <div class="meta-row">
-    <span class="updated-pill"><span class="dot"></span><span id="updatedText">Loading…</span></span>
-    <button class="refresh-btn" onclick="location.reload()">⟲ Refresh view</button>
-  </div>
-</header>
-<div class="layout">
-  <aside class="rail"><h2>🥇 Golden Boot <span class="tag">Top Scorers</span></h2><div id="scorersList"></div></aside>
-  <div class="wheel-wrap">
-    <div class="wheel-stage">
-      <svg class="bracket" viewBox="0 0 920 920" id="bracketSvg">
-        <defs>
-          <radialGradient id="trophyGlow" cx="50%" cy="42%" r="65%">
-            <stop offset="0%" stop-color="#3d3013"/><stop offset="55%" stop-color="#1c1608"/><stop offset="100%" stop-color="#0c0a06"/>
-          </radialGradient>
-        </defs>
-        <g id="connectorLayer"></g>
-        <g id="leafLayer"></g>
-        <g id="r16Layer"></g>
-        <g id="qfLayer"></g>
-        <circle cx="460" cy="460" r="86" class="center-ring"/>
-        <text x="460" y="438" text-anchor="middle" dominant-baseline="central" font-size="32">🏆</text>
-        <text x="460" y="475" class="center-label">FINAL</text>
-        <text x="460" y="491" class="center-sub">19 JUL 2026</text>
-        <text x="460" y="504" class="center-sub">MetLife Stadium, NJ</text>
-      </svg>
-    </div>
-    <div class="legend">
-      <div class="legend-item"><span class="legend-line" style="border-color:rgba(224,184,74,.5);"></span>Result decided</div>
-      <div class="legend-item"><span class="legend-line" style="border-color:var(--line);"></span>Upcoming</div>
-      <div class="legend-item"><span class="legend-sq" style="background:#0f1e14;border:1px solid rgba(34,169,115,.6);"></span>Winner advancing</div>
-      <div class="legend-item">Tap any fixture for full detail →</div>
-    </div>
-  </div>
-  <aside class="rail"><h2>🎯 Playmakers <span class="tag">Top Assists</span></h2><div id="assistsList"></div></aside>
+<div class="page-wrap">
+
+<!-- ── TAB RAIL ── -->
+<nav class="tab-rail">
+  <div class="tab-rail-label">World Cup</div>
+  <button class="tab-btn active" data-year="2026" onclick="switchTab(2026)">
+    <span class="tab-flag">🇺🇸🇨🇦🇲🇽</span>
+    <span class="tab-year">2026</span>
+    <span class="tab-host">USA·CAN·MEX</span>
+  </button>
+  <div class="tab-divider"></div>
+  <button class="tab-btn" data-year="2022" onclick="switchTab(2022)">
+    <span class="tab-flag">🇶🇦</span>
+    <span class="tab-year">2022</span>
+    <span class="tab-host">Qatar</span>
+  </button>
+  <button class="tab-btn" data-year="2018" onclick="switchTab(2018)">
+    <span class="tab-flag">🇷🇺</span>
+    <span class="tab-year">2018</span>
+    <span class="tab-host">Russia</span>
+  </button>
+  <button class="tab-btn" data-year="2014" onclick="switchTab(2014)">
+    <span class="tab-flag">🇧🇷</span>
+    <span class="tab-year">2014</span>
+    <span class="tab-host">Brazil</span>
+  </button>
+  <button class="tab-btn" data-year="2010" onclick="switchTab(2010)">
+    <span class="tab-flag">🇿🇦</span>
+    <span class="tab-year">2010</span>
+    <span class="tab-host">S.Africa</span>
+  </button>
+  <button class="tab-btn" data-year="2006" onclick="switchTab(2006)">
+    <span class="tab-flag">🇩🇪</span>
+    <span class="tab-year">2006</span>
+    <span class="tab-host">Germany</span>
+  </button>
+  <button class="tab-btn" data-year="2002" onclick="switchTab(2002)">
+    <span class="tab-flag">🇰🇷🇯🇵</span>
+    <span class="tab-year">2002</span>
+    <span class="tab-host">KOR·JPN</span>
+  </button>
+</nav>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="main-content" id="mainContent">
+  <!-- Rendered dynamically by JS -->
 </div>
+</div>
+
+<!-- ── MATCH PANEL ── -->
 <div class="panel-overlay" id="panelOverlay">
   <div class="match-panel" id="matchPanel"></div>
 </div>
-<footer>Data accurate to 11AM IST, 7 July 2026 · Sources: FIFA, ESPN, CBS Sports, Yahoo Sports, Sky Sports, FourFourTwo<br>To refresh: ask Claude to rebuild with latest scores and stats.</footer>
+
 
 <script>
-const LAST_UPDATED="11AM IST, 8 July 2026";
+'use strict';
+// ── CONSTANTS ──────────────────────────────────────────────────────────────
+const NS='http://www.w3.org/2000/svg';
+const EF="'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif";
+const CX=460,CY=460,Rleaf=335,Rr16=258,Rqf=178,Rsf=108,Rfinal=90;
 
-// ── ROUND OF 32 — all 16 complete ─────────────────────────────────────────
-const R32=[
- {id:"r32-1",rnd:"Round of 32",matchNo:73,teamA:"South Africa",teamB:"Canada",flagA:"🇿🇦",flagB:"🇨🇦",venue:"SoFi Stadium, Los Angeles",utcKickoff:"2026-06-28T22:00:00Z",status:"FT",score:"0 – 1",shortScore:"0-1",winner:"Canada",scorers:["Canada: Stephen Eustaquio 92'"],penalties:null,highlights:[{icon:"⚽",text:"Eustaquio struck a thunderous 92nd-minute winner — Canada's first-ever men's World Cup knockout victory."},{icon:"🧤",text:"Keeper Crépeau made 6 crucial saves to keep Canada level before the late winner."},{icon:"📊",text:"South Africa had 54% possession but were punished by a clinical sucker punch."}],fact:"Canada's first men's World Cup knockout match. South Africa became the first team in history to face two different co-host nations in the same tournament."},
- {id:"r32-2",rnd:"Round of 32",matchNo:74,teamA:"Germany",teamB:"Paraguay",flagA:"🇩🇪",flagB:"🇵🇾",venue:"Gillette Stadium, Boston",utcKickoff:"2026-06-29T20:30:00Z",status:"FT (Pens)",score:"1 – 1",shortScore:"1-1 (3-4p)",winner:"Paraguay",scorers:["Paraguay: Julio Enciso 40'","Germany: Kai Havertz 51'","Paraguay win 4-3 on penalties"],penalties:"Germany 3-4 Paraguay",highlights:[{icon:"⚽",text:"Enciso gave Paraguay a lead with a precise low drive in the 40th minute."},{icon:"⚽",text:"Havertz levelled. Tah's extra-time header ruled out by VAR for a foul on Neuer."},{icon:"❌",text:"Havertz missed Germany's first penalty — handing Paraguay the advantage."},{icon:"✅",text:"Canale converted the decisive penalty — Germany's first-ever WC shootout defeat."}],fact:"Germany had never lost a World Cup penalty shootout — perfect 4-0 since 1982. Paraguay reach the R16 for the first time since 2010."},
- {id:"r32-3",rnd:"Round of 32",matchNo:75,teamA:"Netherlands",teamB:"Morocco",flagA:"🇳🇱",flagB:"🇲🇦",venue:"Estadio BBVA, Monterrey",utcKickoff:"2026-06-29T23:30:00Z",status:"FT (Pens)",score:"1 – 1",shortScore:"1-1 (2-3p)",winner:"Morocco",scorers:["Netherlands: Cody Gakpo 72'","Morocco: Soufiane Rahimi 89' pen","Morocco win 3-2 on penalties"],penalties:"Netherlands 2-3 Morocco",highlights:[{icon:"⚽",text:"Gakpo headed the Dutch ahead on 72 minutes."},{icon:"🤲",text:"Rahimi equalised from the spot in the 89th minute after a Dumfries handball."},{icon:"🧤",text:"Bounou saved two Dutch penalties to send Morocco through 3-2."}],fact:"Netherlands eliminated via penalties at three consecutive World Cups — 2014, 2022, and now 2026."},
- {id:"r32-4",rnd:"Round of 32",matchNo:76,teamA:"Brazil",teamB:"Japan",flagA:"🇧🇷",flagB:"🇯🇵",venue:"NRG Stadium, Houston",utcKickoff:"2026-06-29T17:00:00Z",status:"FT",score:"2 – 1",shortScore:"2-1",winner:"Brazil",scorers:["Japan: Kaishu Sano 29'","Brazil: Casemiro 58', Gabriel Martinelli 90+4'"],penalties:null,highlights:[{icon:"⚽",text:"Sano stunned Brazil with a precise long-range strike in the 29th minute."},{icon:"⚽",text:"Casemiro levelled on 58. Martinelli broke Japanese hearts in the 94th minute."},{icon:"📊",text:"Japan outshot Brazil 11-9 — a cruel exit for the better side."}],fact:"Japan have now led in knockout rounds in three consecutive World Cups and lost all three."},
- {id:"r32-5",rnd:"Round of 32",matchNo:77,teamA:"Ivory Coast",teamB:"Norway",flagA:"🇨🇮",flagB:"🇳🇴",venue:"AT&T Stadium, Arlington",utcKickoff:"2026-06-30T17:00:00Z",status:"FT",score:"1 – 2",shortScore:"1-2",winner:"Norway",scorers:["Norway: Alexander Isak 34'","Ivory Coast: Sébastien Haller 61'","Norway: Erling Haaland 78'"],penalties:null,highlights:[{icon:"⚽",text:"Isak opened on 34 minutes with a superb finish from a Haaland assist."},{icon:"⚽",text:"Haller equalised with a powerful back-post header on 61 minutes."},{icon:"⚽",text:"Haaland won it on 78 minutes — thunderous shot off the crossbar and in."}],fact:"Haaland in his first World Cup. He became the fastest player ever to score 60 international goals (53 matches)."},
- {id:"r32-6",rnd:"Round of 32",matchNo:78,teamA:"France",teamB:"Sweden",flagA:"🇫🇷",flagB:"🇸🇪",venue:"MetLife Stadium, East Rutherford",utcKickoff:"2026-06-30T21:00:00Z",status:"FT",score:"3 – 0",shortScore:"3-0",winner:"France",scorers:["France: Kylian Mbappé 44', 71'","France: Bradley Barcola 67' (Olise assist)"],penalties:null,highlights:[{icon:"⚽",text:"Mbappé opened with a precise low drive on 44 minutes."},{icon:"🎯",text:"Olise was exceptional — hit the post before setting up both second-half goals."},{icon:"⚽",text:"Barcola 2-0 on 67, Mbappé completed the rout on 71."}],fact:"Mbappé's brace levelled him with Messi on 6 goals. Olise reached 5 assists — only Pelé (6 in 1970) has ever recorded more in a single World Cup."},
- {id:"r32-7",rnd:"Round of 32",matchNo:79,teamA:"Mexico",teamB:"Ecuador",flagA:"🇲🇽",flagB:"🇪🇨",venue:"Estadio Azteca, Mexico City",utcKickoff:"2026-07-01T01:00:00Z",status:"FT",score:"2 – 0",shortScore:"2-0",winner:"Mexico",scorers:["Mexico: Julián Quiñones 22', Raúl Jiménez 31'"],penalties:null,highlights:[{icon:"⚽",text:"Quiñones put Mexico ahead on 22 minutes — 80,000 Azteca fans erupted."},{icon:"⚽",text:"Jiménez doubled the lead on 31 minutes with a powerful header."},{icon:"🏆",text:"Mexico's first knockout win since 1986 vs Bulgaria — at the very same Azteca."}],fact:"Mexico's first World Cup knockout stage win in 40 years. The Azteca atmosphere was described as the loudest World Cup crowd since 1986."},
- {id:"r32-8",rnd:"Round of 32",matchNo:80,teamA:"England",teamB:"DR Congo",flagA:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",flagB:"🇨🇩",venue:"Mercedes-Benz Stadium, Atlanta",utcKickoff:"2026-07-01T16:00:00Z",status:"FT",score:"2 – 1",shortScore:"2-1",winner:"England",scorers:["DR Congo: Yoane Wissa 34'","England: Harry Kane 78', 85'"],penalties:null,highlights:[{icon:"⚽",text:"DR Congo stunned England — Wissa put them ahead on 34 minutes."},{icon:"😰",text:"England struggled badly for over an hour."},{icon:"⚽",text:"Kane headed England level on 78 minutes, then poked home a second in the 85th."},{icon:"👑",text:"Kane's brace took him past Lineker as England's all-time World Cup goalscorer."}],fact:"DR Congo's first-ever men's World Cup appearance. Kane's brace was his 4th and 5th goals of this tournament."},
- {id:"r32-9",rnd:"Round of 32",matchNo:81,teamA:"Belgium",teamB:"Senegal",flagA:"🇧🇪",flagB:"🇸🇳",venue:"Lumen Field, Seattle",utcKickoff:"2026-07-01T20:00:00Z",status:"FT (AET)",score:"3 – 2",shortScore:"3-2 aet",winner:"Belgium",scorers:["Senegal: Habib Diarra 25', Ismaïla Sarr 51'","Belgium: Romelu Lukaku 86', Youri Tielemans 89', 120+5' pen"],penalties:null,highlights:[{icon:"⚽",text:"Senegal led 2-0 at half time — Diarra 25, Sarr 51. Belgium looked finished."},{icon:"⚽",text:"Lukaku 86, Tielemans 89 — extraordinary comeback forces extra time."},{icon:"✅",text:"Tielemans converted a controversial 125th-minute penalty to send Belgium through."}],fact:"Belgium came back from 2-0 down with 4 minutes left. The penalty was the most controversial VAR call of the tournament."},
- {id:"r32-10",rnd:"Round of 32",matchNo:82,teamA:"United States",teamB:"Bosnia & Herz.",flagA:"🇺🇸",flagB:"🇧🇦",venue:"Levi's Stadium, Santa Clara",utcKickoff:"2026-07-02T00:00:00Z",status:"FT",score:"2 – 0",shortScore:"2-0",winner:"United States",scorers:["USA: Folarin Balogun 45'","USA: Malik Tillman 82'"],penalties:null,highlights:[{icon:"⚽",text:"Balogun fired the USA ahead just before half time."},{icon:"🟥",text:"Balogun red-carded in the 64th minute — USA down to 10 men."},{icon:"⚽",text:"Tillman sealed it on 82 minutes. Incredible 10-man performance."}],fact:"USA won with 10 men for 26 minutes. FIFA later controversially rescinded Balogun's suspension for the R16."},
- {id:"r32-11",rnd:"Round of 32",matchNo:83,teamA:"Spain",teamB:"Austria",flagA:"🇪🇸",flagB:"🇦🇹",venue:"SoFi Stadium, Inglewood",utcKickoff:"2026-07-02T19:00:00Z",status:"FT",score:"3 – 0",shortScore:"3-0",winner:"Spain",scorers:["Spain: Mikel Oyarzabal 12', 78'","Spain: Pedro Porro 66'"],penalties:null,highlights:[{icon:"⚽",text:"Oyarzabal put Spain ahead on 12 minutes with a sharp low finish."},{icon:"⚽",text:"Porro made it 2-0 on 66 with a powerful header."},{icon:"⚽",text:"Oyarzabal completed the scoring on 78 — Spain's first knockout win since 2010."},{icon:"🌟",text:"Lamine Yamal named Man of the Match despite not scoring."}],fact:"Spain's first World Cup knockout win since 2010. Yamal was described as the most dangerous winger in the tournament."},
- {id:"r32-12",rnd:"Round of 32",matchNo:84,teamA:"Portugal",teamB:"Croatia",flagA:"🇵🇹",flagB:"🇭🇷",venue:"BMO Field, Toronto",utcKickoff:"2026-07-02T23:00:00Z",status:"FT",score:"2 – 1",shortScore:"2-1",winner:"Portugal",scorers:["Portugal: Cristiano Ronaldo 55' pen","Croatia: Petar Musa 88'","Portugal: Gonçalo Ramos 90+2'"],penalties:null,highlights:[{icon:"⚽",text:"Ronaldo levelled from the spot on 55 minutes — his 3rd goal of the tournament."},{icon:"😱",text:"Musa put Croatia ahead on 88 — Portugal looked set for extra time."},{icon:"⚽",text:"Ramos headed in a Guerreiro cross in the 92nd minute — wild scenes in Toronto."},{icon:"🚫",text:"A late Croatia equaliser ruled out by VAR for offside — Modric's career ended."}],fact:"Ronaldo, 41, became the first player to score in six different World Cups. This was almost certainly Luka Modric's final World Cup game."},
- {id:"r32-13",rnd:"Round of 32",matchNo:85,teamA:"Switzerland",teamB:"Algeria",flagA:"🇨🇭",flagB:"🇩🇿",venue:"BC Place, Vancouver",utcKickoff:"2026-07-03T03:00:00Z",status:"FT",score:"2 – 0",shortScore:"2-0",winner:"Switzerland",scorers:["Switzerland: Johan Manzambi 18'","Switzerland: Breel Embolo 67'"],penalties:null,highlights:[{icon:"⚽",text:"Manzambi gave Switzerland the lead on 18 minutes with a fine finish."},{icon:"💪",text:"Algeria had possession but Switzerland were disciplined and clinical on the counter."},{icon:"⚽",text:"Embolo sealed it on 67 minutes with a tap-in from a counter-attack."}],fact:"Switzerland's first World Cup knockout win since 1938. They face Colombia in the Round of 16 in Vancouver."},
- {id:"r32-14",rnd:"Round of 32",matchNo:86,teamA:"Australia",teamB:"Egypt",flagA:"🇦🇺",flagB:"🇪🇬",venue:"AT&T Stadium, Arlington",utcKickoff:"2026-07-03T18:00:00Z",status:"FT (Pens)",score:"1 – 1",shortScore:"1-1 (2-4p)",winner:"Egypt",scorers:["Egypt: Emam Ashour (early)","Australia: Own Goal (2nd half)","Egypt win 4-2 on penalties"],penalties:"Australia 2-4 Egypt",highlights:[{icon:"⚽",text:"Emam Ashour gave Egypt an early lead with a confident finish."},{icon:"🥅",text:"An own goal equalised for Australia in the second half."},{icon:"🧤",text:"Egypt's goalkeeper saved two penalties as Egypt advance 4-2 in the shootout."}],fact:"Egypt's first World Cup penalty shootout win. They will face Argentina in the Round of 16 in Atlanta."},
- {id:"r32-15",rnd:"Round of 32",matchNo:87,teamA:"Argentina",teamB:"Cape Verde",flagA:"🇦🇷",flagB:"🇨🇻",venue:"Hard Rock Stadium, Miami",utcKickoff:"2026-07-03T22:00:00Z",status:"FT (AET)",score:"3 – 2",shortScore:"3-2 aet",winner:"Argentina",scorers:["Argentina: Lionel Messi 29'","Cape Verde: Deroy Duarte (2nd half)","Argentina: Lisandro Martínez (ET 92')","Cape Verde: Sidny Lopes Cabral 103'","Argentina: OG Diney Borges (late ET)"],penalties:null,highlights:[{icon:"⚽",text:"Messi opened on 29 minutes — his 20th career World Cup goal, a new all-time record."},{icon:"🇨🇻",text:"Deroy Duarte equalised for Cape Verde in the 2nd half — the fairy tale continued."},{icon:"⚽",text:"Lisandro Martínez put Argentina ahead in ET."},{icon:"🤯",text:"Sidny Lopes Cabral tied it again in the 103rd — extraordinary scenes in Miami."},{icon:"✅",text:"A Cape Verde own goal (Diney Borges) finally ended their heroic run in late ET."}],fact:"Messi scored his 20th career World Cup goal — a new all-time record. Cape Verde became the smallest nation ever to push a defending champion to extra time."},
- {id:"r32-16",rnd:"Round of 32",matchNo:88,teamA:"Colombia",teamB:"Ghana",flagA:"🇨🇴",flagB:"🇬🇭",venue:"Arrowhead Stadium, Kansas City",utcKickoff:"2026-07-04T01:30:00Z",status:"FT",score:"1 – 0",shortScore:"1-0",winner:"Colombia",scorers:["Colombia: Jhon Arias 14'"],penalties:null,highlights:[{icon:"⚽",text:"Jhon Arias buried a cross to the far post on 14 minutes."},{icon:"🛡️",text:"Ghana mustered zero shots on target across 90 minutes — completely suffocated."},{icon:"📊",text:"Colombia dominated: 61% possession, 2.06 xG vs Ghana's 0.26."}],fact:"Ghana finished with 0 shots on target — only the second time in World Cup knockout history. Colombia face Switzerland in the Round of 16 in Vancouver."}
-];
+function polar(r,deg){
+  const rad=(deg-90)*Math.PI/180;
+  return{x:CX+r*Math.cos(rad), y:CY+r*Math.sin(rad)};
+}
+function boxPt(R,deg,push){
+  const p=polar(R,deg), rad=(deg-90)*Math.PI/180;
+  return{bx:p.x+Math.cos(rad)*push, by:p.y+Math.sin(rad)*push};
+}
 
-// ── ROUND OF 16 — 6 of 8 complete, 2 yet to play at 11AM IST Jul 7 ──────────
-const R16=[
- {id:"r16-1",rnd:"Round of 16",matchNo:90,teamA:"Canada",teamB:"Morocco",flagA:"🇨🇦",flagB:"🇲🇦",venue:"NRG Stadium, Houston",utcKickoff:"2026-07-04T17:00:00Z",status:"FT",score:"0 – 3",shortScore:"0-3",winner:"Morocco",scorers:["Morocco: Azzedine Ounahi 50', 82'","Morocco: Soufiane Rahimi 90+'"],penalties:null,highlights:[{icon:"⚽",text:"Five minutes into the second half Ounahi put Morocco ahead with a fine finish."},{icon:"⚽",text:"Ounahi scored his second on 82 minutes, converting a breakaway."},{icon:"⚽",text:"Rahimi added a third in stoppage time to seal it."}],fact:"Morocco became the first African nation to reach back-to-back World Cup quarterfinals. Ounahi was outstanding with 2 goals and total midfield control."},
- {id:"r16-2",rnd:"Round of 16",matchNo:89,teamA:"France",teamB:"Paraguay",flagA:"🇫🇷",flagB:"🇵🇾",venue:"Lincoln Financial Field, Philadelphia",utcKickoff:"2026-07-04T21:00:00Z",status:"FT",score:"1 – 0",shortScore:"1-0",winner:"France",scorers:["France: Kylian Mbappé (pen, 2nd half)"],penalties:null,highlights:[{icon:"😤",text:"Paraguay were disciplined and well-organised — France struggled to break them down."},{icon:"⚽",text:"Mbappé converted a second-half penalty — his 7th of the tournament."},{icon:"📊",text:"France had 72% possession but Paraguay's defensive shape caused real problems."}],fact:"Paraguay's remarkable run — which included eliminating Germany — finally ended. Mbappé's penalty took him to 7, level with Haaland in the Golden Boot race."},
- {id:"r16-3",rnd:"Round of 16",matchNo:91,teamA:"Brazil",teamB:"Norway",flagA:"🇧🇷",flagB:"🇳🇴",venue:"MetLife Stadium, East Rutherford",utcKickoff:"2026-07-05T20:00:00Z",status:"FT",score:"0 – 2",shortScore:"0-2",winner:"Norway",scorers:["Norway: Erling Haaland 75' (header), 81' (long-range)"],penalties:null,highlights:[{icon:"⚽",text:"Haaland climbed above Gabriel to head home on 75 minutes as the game edged toward extra time."},{icon:"⚽",text:"Six minutes later, Haaland fired a stunning long-range shot past Alisson for his second."},{icon:"📉",text:"Brazil — five-time World Cup winners — were shockingly eliminated."}],fact:"Norway's 2-0 win over Brazil is one of the biggest World Cup upsets since Senegal beat France in 2002. Haaland's brace took him to 7 tournament goals."},
- {id:"r16-4",rnd:"Round of 16",matchNo:92,teamA:"Mexico",teamB:"England",flagA:"🇲🇽",flagB:"🇬🇧",venue:"Estadio Azteca, Mexico City",utcKickoff:"2026-07-06T00:00:00Z",status:"FT",score:"2 – 3",shortScore:"2-3",winner:"England",scorers:["England: Jude Bellingham 8', 10'","Mexico: Julián Quiñones 44'","England: Harry Kane pen 57'","Mexico: (late consolation)"],penalties:null,highlights:[{icon:"⚽",text:"Bellingham stunned the Azteca by scoring twice in 98 seconds — 8th and 10th minutes."},{icon:"⚽",text:"Quiñones gave Mexico a lifeline just before half time."},{icon:"🟥",text:"Jarrell Quansah was red-carded for England — they played 35+ minutes with 10 men."},{icon:"⚽",text:"Kane converted a penalty on 57 minutes to make it 3-1. Mexico scored late but couldn't complete the comeback."}],fact:"England's win at the Azteca is their greatest World Cup victory on foreign soil since 1966. The last time these nations met at a World Cup was 1986 — Maradona's Hand of God at this same stadium."},
- {id:"r16-5",rnd:"Round of 16",matchNo:94,teamA:"Belgium",teamB:"USA",flagA:"🇧🇪",flagB:"🇺🇸",venue:"Lumen Field, Seattle",utcKickoff:"2026-07-07T00:00:00Z",status:"FT",score:"4 – 1",shortScore:"4-1",winner:"Belgium",scorers:["Belgium: Charles De Ketelaere 9', 33'","USA: Malik Tillman 31' (free kick)","Belgium: Hans Vanaken 57'","Belgium: Romelu Lukaku 90+3'"],penalties:null,highlights:[{icon:"⚽",text:"De Ketelaere tapped in on 9 minutes — Belgium started with real intent."},{icon:"⚽",text:"Tillman levelled with a brilliant deflected free kick on 31 minutes."},{icon:"⚽",text:"De Ketelaere scored again just 2 minutes later — a sucker punch."},{icon:"⚽",text:"Vanaken made it 3-1 after a horror mistake from keeper Freese. Lukaku added a 4th in stoppage time."}],fact:"Despite FIFA controversially rescinding Balogun's suspension after reported political pressure, it made no difference — Belgium ran out comfortable 4-1 winners. All three co-hosts are now eliminated."},
- {id:"r16-6",rnd:"Round of 16",matchNo:93,teamA:"Spain",teamB:"Portugal",flagA:"🇪🇸",flagB:"🇵🇹",venue:"AT&T Stadium, Dallas",utcKickoff:"2026-07-06T19:00:00Z",status:"FT",score:"1 – 0",shortScore:"1-0",winner:"Spain",scorers:["Spain: Mikel Merino 90+1' (Ferran Torres assist)"],penalties:null,highlights:[{icon:"🧤",text:"Diogo Costa was outstanding — making saves from Yamal, Baena and Oyarzabal to keep it goalless."},{icon:"💔",text:"Ronaldo and Bruno Fernandes were peripheral figures throughout."},{icon:"⚽",text:"Merino, on as a substitute, received a pass from Torres and slid past Costa in the 91st minute."},{icon:"😔",text:"Ronaldo's World Cup career ended in silence — the oldest player in the tournament walked off without a word."}],fact:"Ronaldo's dream of winning a World Cup ended with a whimper. He became the first player to appear at six World Cups, but left with no knockout stage goals and a 1-0 defeat to neighbours Spain."},
- {id:"r16-7",rnd:"Round of 16",matchNo:95,teamA:"Argentina",teamB:"Egypt",flagA:"🇦🇷",flagB:"🇪🇬",venue:"Mercedes-Benz Stadium, Atlanta",utcKickoff:"2026-07-07T16:00:00Z",status:"FT",score:"3 – 2",shortScore:"3-2",winner:"Argentina",scorers:["Egypt: Yasser Ibrahim 15'","Egypt: Mostafa Zico 67'","Argentina: Cristian Romero 79'","Argentina: Lionel Messi 83'","Argentina: Enzo Fernández 90+2'"],penalties:null,highlights:[{icon:"😱",text:"Egypt shocked Argentina — Yasser Ibrahim headed in on 15 minutes."},{icon:"🥅",text:"Messi missed a penalty in the 21st minute. Mostafa Zico extended Egypt's lead to 2-0 on 67 minutes."},{icon:"🔥",text:"Three goals in 13 minutes: Romero 79', Messi 83', Enzo Fernández 90+2' — one of the greatest World Cup comebacks ever."},{icon:"🐐",text:"Messi's goal was his 21st World Cup goal — extending his own all-time record."}],fact:"Argentina came back from 2-0 down with 11 minutes left — the greatest comeback in their World Cup history. Messi's 83rd-minute goal was his 21st World Cup goal, the new all-time record."},
- {id:"r16-8",rnd:"Round of 16",matchNo:96,teamA:"Switzerland",teamB:"Colombia",flagA:"🇨🇭",flagB:"🇨🇴",venue:"BC Place, Vancouver",utcKickoff:"2026-07-07T20:00:00Z",status:"FT (Pens)",score:"0 – 0",shortScore:"0-0 (4-3p)",winner:"Switzerland",scorers:["Switzerland win 4-3 on penalties"],penalties:"Colombia 3-4 Switzerland",highlights:[{icon:"😴",text:"A largely uneventful 120 minutes — neither side could break the deadlock."},{icon:"🎯",text:"James Rodríguez came close on two occasions in extra time."},{icon:"🧤",text:"Switzerland's goalkeeper made two crucial saves in the shootout."},{icon:"✅",text:"Ruben Vargas converted the decisive penalty — Switzerland advance to face Argentina."}],fact:"Switzerland reach the World Cup quarterfinals for the first time since 1954. They will face defending champions Argentina — a side they have never beaten in a competitive fixture."}
-];
-
-// ── GOLDEN BOOT — NBC Sports, FIFA, Sky Sports, ESPN as of 11AM IST Jul 7 ──
-// Three-way tie at 7: Mbappé (leads on assists tiebreaker per FIFA), Messi, Haaland
-// Haaland now has 9 goals after his Brazil brace; Mbappé 7 after pen vs Paraguay
-// CORRECTION: Haaland scored 2 vs Brazil → 5+2=7. But FourFourTwo says "9 goals"
-// NBC Sports says "7 goals Messi, Mbappe, Haaland" as of after R16 day 2 (Jul 5)
-// After Jul 6: Bellingham scored 2 vs Mexico → Bellingham on 4 goals
-// Kane scored penalty vs Mexico → Kane on 6 goals
-const TOP_SCORERS=[
- {rank:1,name:"Lionel Messi",country:"Argentina",flag:"🇦🇷",goals:8,note:"WC all-time record: 21"},
- {rank:2,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",goals:7,note:"Leads on assists"},
- {rank:3,name:"Erling Haaland",country:"Norway",flag:"🇳🇴",goals:7,note:"Debut World Cup"},
- {rank:4,name:"Harry Kane",country:"England",flag:"🇬🇧",goals:6,note:"Eng WC all-time top scorer"},
- {rank:5,name:"Ousmane Dembélé",country:"France",flag:"🇫🇷",goals:5,note:""},
- {rank:5,name:"Azzedine Ounahi",country:"Morocco",flag:"🇲🇦",goals:5,note:"Brace vs Canada"},
- {rank:7,name:"Mikel Oyarzabal",country:"Spain",flag:"🇪🇸",goals:4,note:""},
- {rank:7,name:"Jude Bellingham",country:"England",flag:"🇬🇧",goals:4,note:"Brace vs Mexico"},
- {rank:7,name:"Vinícius Júnior",country:"Brazil",flag:"🇧🇷",goals:4,note:"Eliminated"},
- {rank:7,name:"Cristiano Ronaldo",country:"Portugal",flag:"🇵🇹",goals:3,note:"WC career ended"}
-];
-const TOP_ASSISTS=[
- {rank:1,name:"Michael Olise",country:"France",flag:"🇫🇷",assists:6,note:"Equals Pelé 1970 record"},
- {rank:2,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",assists:3,note:"Golden Boot tiebreaker"},
- {rank:2,name:"Martin Ødegaard",country:"Norway",flag:"🇳🇴",assists:3,note:""},
- {rank:2,name:"Ferran Torres",country:"Spain",flag:"🇪🇸",assists:3,note:"Assist for Merino winner"},
- {rank:5,name:"Bruno Guimarães",country:"Brazil",flag:"🇧🇷",assists:3,note:"Eliminated"},
- {rank:6,name:"Bukayo Saka",country:"England",flag:"🇬🇧",assists:2,note:""},
- {rank:6,name:"Lamine Yamal",country:"Spain",flag:"🇪🇸",assists:2,note:""},
- {rank:6,name:"Erling Haaland",country:"Norway",flag:"🇳🇴",assists:2,note:""},
- {rank:6,name:"Lisandro Martínez",country:"Argentina",flag:"🇦🇷",assists:2,note:""},
- {rank:6,name:"Azzedine Ounahi",country:"Morocco",flag:"🇲🇦",assists:2,note:""}
-];
-
-// ── GEOMETRY (unchanged) ─────────────────────────────────────────────────────
-const CX=460,CY=460,Rleaf=330,Rr16=250,Rqf=170,Rsf=100;
-function polar(r,deg){const rad=(deg-90)*Math.PI/180;return{x:CX+r*Math.cos(rad),y:CY+r*Math.sin(rad)};}
-const CONNECTORS=[["M 460.0 130.0 L 460.0 210.0","s"],["M 586.3 155.1 L 555.7 229.0","s"],["M 693.3 226.7 L 636.8 283.2","s"],["M 764.9 333.7 L 691.0 364.3","s"],["M 790.0 460.0 L 710.0 460.0","s"],["M 764.9 586.3 L 691.0 555.7","s"],["M 693.3 693.3 L 636.8 636.8","s"],["M 586.3 764.9 L 555.7 691.0","s"],["M 460.0 790.0 L 460.0 710.0","s"],["M 333.7 764.9 L 364.3 691.0","s"],["M 226.7 693.3 L 283.2 636.8","s"],["M 155.1 586.3 L 229.0 555.7","s"],["M 130.0 460.0 L 210.0 460.0","s"],["M 155.1 333.7 L 229.0 364.3","s"],["M 226.7 226.7 L 283.2 283.2","s"],["M 333.7 155.1 L 364.3 229.0","s"],["M 460.0 210.0 A 250 250 0 0 1 555.7 229.0","t"],["M 508.8 214.8 L 493.2 293.3","s"],["M 636.8 283.2 A 250 250 0 0 1 691.0 364.3","t"],["M 667.9 321.1 L 601.3 365.6","s"],["M 710.0 460.0 A 250 250 0 0 1 691.0 555.7","t"],["M 705.2 508.8 L 626.7 493.2","s"],["M 636.8 636.8 A 250 250 0 0 1 555.7 691.0","t"],["M 598.9 667.9 L 554.4 601.3","s"],["M 460.0 710.0 A 250 250 0 0 1 364.3 691.0","t"],["M 411.2 705.2 L 426.8 626.7","s"],["M 283.2 636.8 A 250 250 0 0 1 229.0 555.7","t"],["M 252.1 598.9 L 318.7 554.4","s"],["M 210.0 460.0 A 250 250 0 0 1 229.0 364.3","t"],["M 214.8 411.2 L 293.3 426.8","s"],["M 283.2 283.2 A 250 250 0 0 1 364.3 229.0","t"],["M 321.1 252.1 L 365.6 318.7","s"],["M 493.2 293.3 A 170 170 0 0 1 601.3 365.6","t"],["M 554.4 318.7 L 515.6 376.9","s"],["M 626.7 493.2 A 170 170 0 0 1 554.4 601.3","t"],["M 601.3 554.4 L 543.1 515.6","s"],["M 426.8 626.7 A 170 170 0 0 1 318.7 554.4","t"],["M 365.6 601.3 L 404.4 543.1","s"],["M 293.3 426.8 A 170 170 0 0 1 365.6 318.7","t"],["M 318.7 365.6 L 376.9 404.4","s"],["M 515.6 376.9 A 100 100 0 0 1 543.1 515.6","t"],["M 558.1 440.5 L 546.3 442.8","s"],["M 404.4 543.1 A 100 100 0 0 1 376.9 404.4","t"],["M 361.9 479.5 L 373.7 477.2","s"],["M 546.3 442.8 A 88 88 0 0 1 373.7 477.2","t"]];
-const LEAVES=[{a:0,nx:460,ny:130},{a:22.5,nx:586.3,ny:155.1},{a:45,nx:693.3,ny:226.7},{a:67.5,nx:764.9,ny:333.7},{a:90,nx:790,ny:460},{a:112.5,nx:764.9,ny:586.3},{a:135,nx:693.3,ny:693.3},{a:157.5,nx:586.3,ny:764.9},{a:180,nx:460,ny:790},{a:202.5,nx:333.7,ny:764.9},{a:225,nx:226.7,ny:693.3},{a:247.5,nx:155.1,ny:586.3},{a:270,nx:130,ny:460},{a:292.5,nx:155.1,ny:333.7},{a:315,nx:226.7,ny:226.7},{a:337.5,nx:333.7,ny:155.1}];
+const leafA=[0,22.5,45,67.5,90,112.5,135,157.5,180,202.5,225,247.5,270,292.5,315,337.5];
 const r16A=[11.25,56.25,101.25,146.25,191.25,236.25,281.25,326.25];
 const qfA=[33.75,123.75,213.75,303.75];
 const sfA=[78.75,258.75];
-const R16_BOX_CENTERS=r16A.map(a=>{const pt=polar(Rr16,a),rad=(a-90)*Math.PI/180;return{bx:pt.x+Math.cos(rad)*28,by:pt.y+Math.sin(rad)*28,a};});
+const LEAVES=leafA.map(a=>{const p=polar(Rleaf,a);return{a,x:parseFloat(p.x.toFixed(1)),y:parseFloat(p.y.toFixed(1))};});
 
-const cL=document.getElementById('connectorLayer'),lL=document.getElementById('leafLayer'),r16L=document.getElementById('r16Layer');
-CONNECTORS.forEach(([d,t])=>{const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',d);p.setAttribute('class',t==='s'?'spoke-line':'tie-line');p.setAttribute('data-t',t);cL.appendChild(p);});
-[[r16A,Rr16],[qfA,Rqf],[sfA,Rsf]].forEach(([angs,r])=>{angs.forEach(a=>{const pt=polar(r,a);const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',pt.x.toFixed(1));c.setAttribute('cy',pt.y.toFixed(1));c.setAttribute('r',3.5);c.setAttribute('class','joint-dot');cL.appendChild(c);});});
+// SVG DOM helpers
+function mk(tag,attrs={}){
+  const e=document.createElementNS(NS,tag);
+  Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));
+  return e;
+}
+function mkT(g,x,y,text,attrs={}){
+  const t=mk('text',{x:x.toFixed(1),y:y.toFixed(1),'dominant-baseline':'central',...attrs});
+  t.textContent=text; g.appendChild(t); return t;
+}
+function mkBox(g,bx,by,BW,BH,cls){
+  return mk('rect',{x:(bx-BW/2).toFixed(1),y:(by-BH/2).toFixed(1),width:BW,height:BH,rx:7,class:cls});
+}
+function mkDiv(g,bx,by,BW){
+  return mk('line',{x1:(bx-BW/2+5).toFixed(1),x2:(bx+BW/2-5).toFixed(1),y1:by.toFixed(1),y2:by.toFixed(1),stroke:'#293a51','stroke-width':'1'});
+}
+function teamRow(g,flag,name,isWin,bx,by,yOff,BW,nameCls){
+  const ft=mk('text',{x:(bx-BW/2+13).toFixed(1),y:(by+yOff).toFixed(1),'text-anchor':'middle','dominant-baseline':'central','font-size':'14','font-family':EF});
+  ft.textContent=flag; g.appendChild(ft);
+  const nt=mk('text',{x:(bx-BW/2+26).toFixed(1),y:(by+yOff).toFixed(1),'dominant-baseline':'central',class:nameCls+(isWin?' win':'')});
+  nt.textContent=name.length>11?name.slice(0,10)+'…':name; g.appendChild(nt);
+}
 
-const BW=118,BH=40,PUSH=26;
-R32.forEach((m,i)=>{
-  const leaf=LEAVES[i],done=m.status!=='Scheduled';
-  const arad=(leaf.a-90)*Math.PI/180,ux=Math.cos(arad),uy=Math.sin(arad);
-  const bx=leaf.nx+ux*PUSH,by=leaf.ny+uy*PUSH;
-  if(done){cL.querySelectorAll('path[data-t="s"]').forEach(p=>{if(p.getAttribute('d').startsWith(`M ${leaf.nx.toFixed(1)} ${leaf.ny.toFixed(1)}`))p.classList.add('won');});}
-  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-  g.setAttribute('class','leaf-node');g.addEventListener('click',()=>openPanel('r32',m.id));
-  const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
-  rect.setAttribute('x',(bx-BW/2).toFixed(1));rect.setAttribute('y',(by-BH/2).toFixed(1));rect.setAttribute('width',BW);rect.setAttribute('height',BH);rect.setAttribute('rx',7);rect.setAttribute('class','leaf-badge'+(done?' completed':''));g.appendChild(rect);
-  const div=document.createElementNS('http://www.w3.org/2000/svg','line');div.setAttribute('x1',(bx-BW/2+4).toFixed(1));div.setAttribute('x2',(bx+BW/2-4).toFixed(1));div.setAttribute('y1',by.toFixed(1));div.setAttribute('y2',by.toFixed(1));div.setAttribute('stroke','#293a51');div.setAttribute('stroke-width','1');g.appendChild(div);
-  if(m.shortScore){const st=document.createElementNS('http://www.w3.org/2000/svg','text');st.setAttribute('x',(bx+BW/2-4).toFixed(1));st.setAttribute('y',by.toFixed(1));st.setAttribute('class','score-tag');st.setAttribute('text-anchor','end');st.setAttribute('dominant-baseline','central');st.textContent=m.shortScore;g.appendChild(st);}
-  function addRow(flag,name,isWin,yOff){
-    const ft=document.createElementNS('http://www.w3.org/2000/svg','text');ft.setAttribute('x',(bx-BW/2+13).toFixed(1));ft.setAttribute('y',(by+yOff).toFixed(1));ft.setAttribute('text-anchor','middle');ft.setAttribute('dominant-baseline','central');ft.setAttribute('font-size','14');ft.setAttribute('font-family',"'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif");ft.textContent=flag;g.appendChild(ft);
-    const nt=document.createElementNS('http://www.w3.org/2000/svg','text');nt.setAttribute('x',(bx-BW/2+26).toFixed(1));nt.setAttribute('y',(by+yOff).toFixed(1));nt.setAttribute('class','leaf-name'+(isWin?' win':''));nt.setAttribute('dominant-baseline','central');nt.textContent=name.length>10?name.slice(0,9)+'…':name;g.appendChild(nt);
-  }
-  addRow(m.flagA,m.teamA,m.winner===m.teamA,-9.5);addRow(m.flagB,m.teamB,m.winner===m.teamB,9.5);
-  lL.appendChild(g);
-  if(done){const pt=polar(Rr16,r16A[Math.floor(i/2)]);cL.querySelectorAll('circle.joint-dot').forEach(c=>{if(Math.abs(parseFloat(c.getAttribute('cx'))-pt.x)<3&&Math.abs(parseFloat(c.getAttribute('cy'))-pt.y)<3)c.classList.add('won');});}
-});
+// ── TOURNAMENT DATA ──────────────────────────────────────────────────────────
+// Data shape for ALL tournaments (historical and 2026):
+// {year, host, winner, completed, finalDate, finalVenue, updated,
+//  awards (null for 2026),
+//  leaf: [...] -- R32 for 2026 (16 items), R16 for historical (8 items)
+//  r16:  [...] -- R16 for 2026 (8 items),  QF for historical (4 items) 
+//  qf:   [...] -- QF for 2026 (4 items),   SF for historical (2 items)
+//  final: {...} or null
+//  scorers: [...], assists: [...] }
 
-const R16BW=120,R16BH=40;
-R16.forEach((m,i)=>{
-  const {bx,by}=R16_BOX_CENTERS[i];
-  const done=m.status!=='Scheduled';
-  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-  g.setAttribute('class','r16-node');g.addEventListener('click',()=>openPanel('r16',m.id));
-  const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
-  rect.setAttribute('x',(bx-R16BW/2).toFixed(1));rect.setAttribute('y',(by-R16BH/2).toFixed(1));rect.setAttribute('width',R16BW);rect.setAttribute('height',R16BH);rect.setAttribute('rx',7);
-  rect.setAttribute('class','r16-badge'+(done?' completed':''));g.appendChild(rect);
-  if(m.shortScore){const st=document.createElementNS('http://www.w3.org/2000/svg','text');st.setAttribute('x',(bx+R16BW/2-4).toFixed(1));st.setAttribute('y',by.toFixed(1));st.setAttribute('class','r16-score-tag');st.setAttribute('text-anchor','end');st.setAttribute('dominant-baseline','central');st.textContent=m.shortScore;g.appendChild(st);}
-  const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');lbl.setAttribute('x',(bx+R16BW/2-3).toFixed(1));lbl.setAttribute('y',(by-R16BH/2+6).toFixed(1));lbl.setAttribute('fill','#576678');lbl.setAttribute('font-size','7');lbl.setAttribute('text-anchor','end');lbl.setAttribute('dominant-baseline','central');lbl.textContent='R16';g.appendChild(lbl);
-  const divl=document.createElementNS('http://www.w3.org/2000/svg','line');divl.setAttribute('x1',(bx-R16BW/2+4).toFixed(1));divl.setAttribute('x2',(bx+R16BW/2-4).toFixed(1));divl.setAttribute('y1',by.toFixed(1));divl.setAttribute('y2',by.toFixed(1));divl.setAttribute('class','r16-divider');g.appendChild(divl);
-  function addR16Row(flag,name,isWin,yOff){
-    const ft=document.createElementNS('http://www.w3.org/2000/svg','text');ft.setAttribute('x',(bx-R16BW/2+13).toFixed(1));ft.setAttribute('y',(by+yOff).toFixed(1));ft.setAttribute('text-anchor','middle');ft.setAttribute('dominant-baseline','central');ft.setAttribute('font-size','14');ft.setAttribute('font-family',"'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif");ft.textContent=flag;g.appendChild(ft);
-    const nt=document.createElementNS('http://www.w3.org/2000/svg','text');nt.setAttribute('x',(bx-R16BW/2+26).toFixed(1));nt.setAttribute('y',(by+yOff).toFixed(1));nt.setAttribute('class','r16-name'+(isWin?' win':''));nt.setAttribute('dominant-baseline','central');nt.textContent=name.length>11?name.slice(0,10)+'…':name;g.appendChild(nt);
-  }
-  addR16Row(m.flagA,m.teamA,m.winner===m.teamA,-9.5);addR16Row(m.flagB,m.teamB,m.winner===m.teamB,9.5);
-  r16L.appendChild(g);
-  if(done){const pt=polar(Rr16,r16A[i]);cL.querySelectorAll('path[data-t="s"]').forEach(p=>{const d=p.getAttribute('d');if(d&&d.includes(`A 250 250`)){const start=d.match(/M ([\d.]+) ([\d.]+)/);if(start){const sx=parseFloat(start[1]),sy=parseFloat(start[2]);const ep=polar(Rr16,r16A[i]);if(Math.abs(sx-ep.x)<5&&Math.abs(sy-ep.y)<5)p.classList.add('won');}}});
-  }
-});
+const DATA={
 
-const MAX_GOALS=8,MAX_ASSISTS=6;
+// ── WC 2026 ─────────────────────────────────────────────────────────────────
+2026:{year:2026,host:"USA · Canada · Mexico",winner:"TBD",completed:false,
+ finalDate:"19 July 2026",finalVenue:"MetLife Stadium, New Jersey",
+ updated:"11AM IST, 8 July 2026",awards:null,
+ leaf:[
+  {id:"m1",rnd:"Round of 32",teamA:"South Africa",teamB:"Canada",flagA:"🇿🇦",flagB:"🇨🇦",score:"0-1",winner:"Canada",scorers:["Canada: Eustaquio 92'"]},
+  {id:"m2",rnd:"Round of 32",teamA:"Germany",teamB:"Paraguay",flagA:"🇩🇪",flagB:"🇵🇾",score:"1-1(3-4p)",winner:"Paraguay",scorers:["Paraguay: Enciso 40'","Germany: Havertz 51'","Paraguay win 4-3 pens"]},
+  {id:"m3",rnd:"Round of 32",teamA:"Netherlands",teamB:"Morocco",flagA:"🇳🇱",flagB:"🇲🇦",score:"1-1(2-3p)",winner:"Morocco",scorers:["Netherlands: Gakpo 72'","Morocco: Rahimi 89'pen","Morocco win 3-2 pens"]},
+  {id:"m4",rnd:"Round of 32",teamA:"Brazil",teamB:"Japan",flagA:"🇧🇷",flagB:"🇯🇵",score:"2-1",winner:"Brazil",scorers:["Japan: Sano 29'","Brazil: Casemiro 58', Martinelli 90+4'"]},
+  {id:"m5",rnd:"Round of 32",teamA:"Ivory Coast",teamB:"Norway",flagA:"🇨🇮",flagB:"🇳🇴",score:"1-2",winner:"Norway",scorers:["Norway: Isak 34'","Ivory Coast: Haller 61'","Norway: Haaland 78'"]},
+  {id:"m6",rnd:"Round of 32",teamA:"France",teamB:"Sweden",flagA:"🇫🇷",flagB:"🇸🇪",score:"3-0",winner:"France",scorers:["France: Mbappé 44',71', Barcola 67'"]},
+  {id:"m7",rnd:"Round of 32",teamA:"Mexico",teamB:"Ecuador",flagA:"🇲🇽",flagB:"🇪🇨",score:"2-0",winner:"Mexico",scorers:["Mexico: Quiñones 22', Jiménez 31'"]},
+  {id:"m8",rnd:"Round of 32",teamA:"England",teamB:"DR Congo",flagA:"🇬🇧",flagB:"🇨🇩",score:"2-1",winner:"England",scorers:["DR Congo: Wissa 34'","England: Kane 78',85'"]},
+  {id:"m9",rnd:"Round of 32",teamA:"Belgium",teamB:"Senegal",flagA:"🇧🇪",flagB:"🇸🇳",score:"3-2aet",winner:"Belgium",scorers:["Senegal: Diarra 25',Sarr 51'","Belgium: Lukaku 86',Tielemans 89',120+5'p"]},
+  {id:"m10",rnd:"Round of 32",teamA:"USA",teamB:"Bosnia",flagA:"🇺🇸",flagB:"🇧🇦",score:"2-0",winner:"USA",scorers:["USA: Balogun 45', Tillman 82'"]},
+  {id:"m11",rnd:"Round of 32",teamA:"Spain",teamB:"Austria",flagA:"🇪🇸",flagB:"🇦🇹",score:"3-0",winner:"Spain",scorers:["Spain: Oyarzabal 12',78', Porro 66'"]},
+  {id:"m12",rnd:"Round of 32",teamA:"Portugal",teamB:"Croatia",flagA:"🇵🇹",flagB:"🇭🇷",score:"2-1",winner:"Portugal",scorers:["Portugal: Ronaldo 55'p, Ramos 90+2'","Croatia: Musa 88'"]},
+  {id:"m13",rnd:"Round of 32",teamA:"Switzerland",teamB:"Algeria",flagA:"🇨🇭",flagB:"🇩🇿",score:"2-0",winner:"Switzerland",scorers:["Switzerland: Manzambi 18', Embolo 67'"]},
+  {id:"m14",rnd:"Round of 32",teamA:"Australia",teamB:"Egypt",flagA:"🇦🇺",flagB:"🇪🇬",score:"1-1(2-4p)",winner:"Egypt",scorers:["Egypt: Ashour early","Australia: OG","Egypt win 4-2 pens"]},
+  {id:"m15",rnd:"Round of 32",teamA:"Argentina",teamB:"Cape Verde",flagA:"🇦🇷",flagB:"🇨🇻",score:"3-2aet",winner:"Argentina",scorers:["Argentina: Messi 29', Martínez ET, OG","Cape Verde: Duarte, Cabral 103'"]},
+  {id:"m16",rnd:"Round of 32",teamA:"Colombia",teamB:"Ghana",flagA:"🇨🇴",flagB:"🇬🇭",score:"1-0",winner:"Colombia",scorers:["Colombia: Arias 14'"]}
+ ],
+ r16:[
+  {id:"r16-1",rnd:"Round of 16",teamA:"Canada",teamB:"Morocco",flagA:"🇨🇦",flagB:"🇲🇦",score:"0-3",winner:"Morocco",scorers:["Morocco: Ounahi 50',82', Rahimi 90+'"]},
+  {id:"r16-2",rnd:"Round of 16",teamA:"France",teamB:"Paraguay",flagA:"🇫🇷",flagB:"🇵🇾",score:"1-0",winner:"France",scorers:["France: Mbappé pen (2nd half)"]},
+  {id:"r16-3",rnd:"Round of 16",teamA:"Brazil",teamB:"Norway",flagA:"🇧🇷",flagB:"🇳🇴",score:"0-2",winner:"Norway",scorers:["Norway: Haaland 75',81'"]},
+  {id:"r16-4",rnd:"Round of 16",teamA:"Mexico",teamB:"England",flagA:"🇲🇽",flagB:"🇬🇧",score:"2-3",winner:"England",scorers:["England: Bellingham 8',10', Kane pen 57'","Mexico: Quiñones 44'"]},
+  {id:"r16-5",rnd:"Round of 16",teamA:"Belgium",teamB:"USA",flagA:"🇧🇪",flagB:"🇺🇸",score:"4-1",winner:"Belgium",scorers:["Belgium: De Ketelaere 9',33', Vanaken 57', Lukaku 90+'","USA: Tillman 31'"]},
+  {id:"r16-6",rnd:"Round of 16",teamA:"Spain",teamB:"Portugal",flagA:"🇪🇸",flagB:"🇵🇹",score:"1-0",winner:"Spain",scorers:["Spain: Merino 90+1' (Torres assist)"]},
+  {id:"r16-7",rnd:"Round of 16",teamA:"Argentina",teamB:"Egypt",flagA:"🇦🇷",flagB:"🇪🇬",score:"3-2",winner:"Argentina",scorers:["Egypt: Ibrahim 15', Zico 67'","Argentina: Romero 79', Messi 83', Fernández 90+2'"]},
+  {id:"r16-8",rnd:"Round of 16",teamA:"Switzerland",teamB:"Colombia",flagA:"🇨🇭",flagB:"🇨🇴",score:"0-0(4-3p)",winner:"Switzerland",scorers:["Switzerland win 4-3 on pens"]}
+ ],
+ qf:[
+  {id:"qf-1",rnd:"Quarter-Final",teamA:"France",teamB:"Morocco",flagA:"🇫🇷",flagB:"🇲🇦",score:null,winner:null,scorers:[]},
+  {id:"qf-2",rnd:"Quarter-Final",teamA:"Spain",teamB:"Belgium",flagA:"🇪🇸",flagB:"🇧🇪",score:null,winner:null,scorers:[]},
+  {id:"qf-3",rnd:"Quarter-Final",teamA:"Norway",teamB:"England",flagA:"🇳🇴",flagB:"🇬🇧",score:null,winner:null,scorers:[]},
+  {id:"qf-4",rnd:"Quarter-Final",teamA:"Argentina",teamB:"Switzerland",flagA:"🇦🇷",flagB:"🇨🇭",score:null,winner:null,scorers:[]}
+ ],
+ final:null,
+ scorers:[
+  {rank:1,name:"Lionel Messi",country:"Argentina",flag:"🇦🇷",goals:8,note:"WC all-time record: 21"},
+  {rank:2,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",goals:7,note:"Leads on assists"},
+  {rank:3,name:"Erling Haaland",country:"Norway",flag:"🇳🇴",goals:7,note:"Debut WC"},
+  {rank:4,name:"Harry Kane",country:"England",flag:"🇬🇧",goals:6,note:"Eng all-time WC top scorer"},
+  {rank:5,name:"Ousmane Dembélé",country:"France",flag:"🇫🇷",goals:5,note:""},
+  {rank:5,name:"Azzedine Ounahi",country:"Morocco",flag:"🇲🇦",goals:5,note:"Brace vs Canada"},
+  {rank:7,name:"Mikel Oyarzabal",country:"Spain",flag:"🇪🇸",goals:4,note:""},
+  {rank:7,name:"Jude Bellingham",country:"England",flag:"🇬🇧",goals:4,note:"Brace vs Mexico"},
+  {rank:7,name:"Vinícius Júnior",country:"Brazil",flag:"🇧🇷",goals:4,note:"Eliminated"},
+  {rank:7,name:"Cristiano Ronaldo",country:"Portugal",flag:"🇵🇹",goals:3,note:"WC career ended"}
+ ],
+ assists:[
+  {rank:1,name:"Michael Olise",country:"France",flag:"🇫🇷",assists:6,note:"Equals Pelé 1970 record"},
+  {rank:2,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",assists:3,note:"Golden Boot tiebreaker"},
+  {rank:2,name:"Martin Ødegaard",country:"Norway",flag:"🇳🇴",assists:3,note:""},
+  {rank:2,name:"Ferran Torres",country:"Spain",flag:"🇪🇸",assists:3,note:"Assist for Merino winner"},
+  {rank:5,name:"Bruno Guimarães",country:"Brazil",flag:"🇧🇷",assists:3,note:"Eliminated"},
+  {rank:6,name:"Bukayo Saka",country:"England",flag:"🇬🇧",assists:2,note:""},
+  {rank:6,name:"Lamine Yamal",country:"Spain",flag:"🇪🇸",assists:2,note:""},
+  {rank:6,name:"Erling Haaland",country:"Norway",flag:"🇳🇴",assists:2,note:""},
+  {rank:6,name:"Lisandro Martínez",country:"Argentina",flag:"🇦🇷",assists:2,note:""},
+  {rank:6,name:"Azzedine Ounahi",country:"Morocco",flag:"🇲🇦",assists:2,note:""}
+ ]},
 
+// ── WC 2022 ─────────────────────────────────────────────────────────────────
+2022:{year:2022,host:"Qatar",winner:"Argentina",completed:true,
+ finalDate:"18 December 2022",finalVenue:"Lusail Stadium, Qatar",
+ updated:"Final: 18 Dec 2022",
+ awards:[
+  {icon:"🏆",label:"Golden Ball",name:"Lionel Messi",country:"Argentina 🇦🇷"},
+  {icon:"🥇",label:"Golden Boot",name:"Kylian Mbappé",country:"France 🇫🇷 · 8 goals"},
+  {icon:"🧤",label:"Golden Glove",name:"Emiliano Martínez",country:"Argentina 🇦🇷"},
+  {icon:"🌟",label:"Best Young Player",name:"Enzo Fernández",country:"Argentina 🇦🇷"},
+  {icon:"🎖️",label:"FIFA Fair Play",name:"England",country:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"}
+ ],
+ // leaf = R16 matches (8), placed as team circles at leaf ring + match box at r16 ring
+ leaf:[
+  {id:"m1",rnd:"Round of 16",teamA:"Netherlands",teamB:"USA",flagA:"🇳🇱",flagB:"🇺🇸",score:"3-1",winner:"Netherlands",scorers:["Netherlands: Dumfries 10',81', Blind 50'","USA: Wright 76'"]},
+  {id:"m2",rnd:"Round of 16",teamA:"Argentina",teamB:"Australia",flagA:"🇦🇷",flagB:"🇦🇺",score:"2-1",winner:"Argentina",scorers:["Argentina: Messi 35', Álvarez 57'","Australia: Goodwin 77'"]},
+  {id:"m3",rnd:"Round of 16",teamA:"France",teamB:"Poland",flagA:"🇫🇷",flagB:"🇵🇱",score:"3-1",winner:"France",scorers:["France: Giroud 44', Mbappé 74',90+1'","Poland: Zieliński pen 45+1'"]},
+  {id:"m4",rnd:"Round of 16",teamA:"England",teamB:"Senegal",flagA:"🇬🇧",flagB:"🇸🇳",score:"3-0",winner:"England",scorers:["England: Henderson 38', Kane 45+1', Saka 57'"]},
+  {id:"m5",rnd:"Round of 16",teamA:"Japan",teamB:"Croatia",flagA:"🇯🇵",flagB:"🇭🇷",score:"1-1(1-3p)",winner:"Croatia",scorers:["Japan: Maeda 43'","Croatia: Perišić 55'","Croatia win pens 3-1"]},
+  {id:"m6",rnd:"Round of 16",teamA:"Brazil",teamB:"South Korea",flagA:"🇧🇷",flagB:"🇰🇷",score:"4-1",winner:"Brazil",scorers:["Brazil: Vinícius 7', Neymar pen 13', Richarlison 29', Paquetá 36'","S.Korea: Paik 76'"]},
+  {id:"m7",rnd:"Round of 16",teamA:"Morocco",teamB:"Spain",flagA:"🇲🇦",flagB:"🇪🇸",score:"0-0(3-0p)",winner:"Morocco",scorers:["0-0 AET · Morocco win 3-0 pens (Busquets, Soler, Sarabia all missed)"]},
+  {id:"m8",rnd:"Round of 16",teamA:"Portugal",teamB:"Switzerland",flagA:"🇵🇹",flagB:"🇨🇭",score:"6-1",winner:"Portugal",scorers:["Portugal: G.Ramos 17',51',73', Pepe 33', Guerreiro 55', R.Leão 79'","Switzerland: Akanji 58'"]}
+ ],
+ // r16 = QF matches (4), placed at qf ring
+ r16:[
+  {id:"qf1",rnd:"Quarter-Final",teamA:"Netherlands",teamB:"Argentina",flagA:"🇳🇱",flagB:"🇦🇷",score:"2-2(3-4p)",winner:"Argentina",scorers:["Netherlands: Berghuis 83', Weghorst 90+11'","Argentina: Molina 35', Messi pen 73'","Argentina win pens 4-3"]},
+  {id:"qf2",rnd:"Quarter-Final",teamA:"France",teamB:"England",flagA:"🇫🇷",flagB:"🇬🇧",score:"2-1",winner:"France",scorers:["France: Tchouaméni 17', Giroud 78'","England: Kane pen 54'"]},
+  {id:"qf3",rnd:"Quarter-Final",teamA:"Croatia",teamB:"Brazil",flagA:"🇭🇷",flagB:"🇧🇷",score:"1-1(4-2p)",winner:"Croatia",scorers:["Brazil: Neymar 105+1'","Croatia: Petković 117'","Croatia win pens 4-2"]},
+  {id:"qf4",rnd:"Quarter-Final",teamA:"Morocco",teamB:"Portugal",flagA:"🇲🇦",flagB:"🇵🇹",score:"1-0",winner:"Morocco",scorers:["Morocco: En-Nesyri 42'"]}
+ ],
+ // qf = SF matches (2), placed at sf ring
+ qf:[
+  {id:"sf1",rnd:"Semi-Final",teamA:"Argentina",teamB:"Croatia",flagA:"🇦🇷",flagB:"🇭🇷",score:"3-0",winner:"Argentina",scorers:["Argentina: Álvarez pen 32', Álvarez 39',69'"]},
+  {id:"sf2",rnd:"Semi-Final",teamA:"France",teamB:"Morocco",flagA:"🇫🇷",flagB:"🇲🇦",score:"2-0",winner:"France",scorers:["France: T.Hernández 5', Kolo Muani 79'"]}
+ ],
+ final:{rnd:"Final",teamA:"Argentina",teamB:"France",flagA:"🇦🇷",flagB:"🇫🇷",score:"3-3(4-2p)",winner:"Argentina",scorers:["Argentina: Di María 36', Messi pen 23', Messi 108'","France: Mbappé 80',81',118'","Argentina win 4-2 on pens"]},
+ scorers:[
+  {rank:1,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",goals:8,note:"Golden Boot"},
+  {rank:2,name:"Lionel Messi",country:"Argentina",flag:"🇦🇷",goals:7,note:"Golden Ball"},
+  {rank:3,name:"Julián Álvarez",country:"Argentina",flag:"🇦🇷",goals:4,note:""},
+  {rank:3,name:"Olivier Giroud",country:"France",flag:"🇫🇷",goals:4,note:"FR all-time top scorer"},
+  {rank:5,name:"Goncalo Ramos",country:"Portugal",flag:"🇵🇹",goals:3,note:"Hat-trick vs Switzerland"},
+  {rank:5,name:"Cody Gakpo",country:"Netherlands",flag:"🇳🇱",goals:3,note:""},
+  {rank:5,name:"Marcus Rashford",country:"England",flag:"🇬🇧",goals:3,note:""},
+  {rank:5,name:"Richarlison",country:"Brazil",flag:"🇧🇷",goals:3,note:""},
+  {rank:5,name:"Enner Valencia",country:"Ecuador",flag:"🇪🇨",goals:3,note:""},
+  {rank:5,name:"Bukayo Saka",country:"England",flag:"🇬🇧",goals:3,note:""}
+ ],
+ assists:[
+  {rank:1,name:"Lionel Messi",country:"Argentina",flag:"🇦🇷",assists:3,note:"Golden Ball"},
+  {rank:1,name:"Antoine Griezmann",country:"France",flag:"🇫🇷",assists:3,note:""},
+  {rank:3,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",assists:2,note:"Golden Boot"},
+  {rank:3,name:"Hakim Ziyech",country:"Morocco",flag:"🇲🇦",assists:2,note:""},
+  {rank:3,name:"Luka Modrić",country:"Croatia",flag:"🇭🇷",assists:2,note:""},
+  {rank:3,name:"Denzel Dumfries",country:"Netherlands",flag:"🇳🇱",assists:2,note:""},
+  {rank:3,name:"João Felix",country:"Portugal",flag:"🇵🇹",assists:2,note:""},
+  {rank:3,name:"Vinicius Jr.",country:"Brazil",flag:"🇧🇷",assists:2,note:""},
+  {rank:3,name:"Raheem Sterling",country:"England",flag:"🇬🇧",assists:2,note:""},
+  {rank:3,name:"Wout Weghorst",country:"Netherlands",flag:"🇳🇱",assists:2,note:""}
+ ]},
 
-// ── QUARTERFINALS ──
-const QF=[
- {id:"qf-1",rnd:"Quarterfinal",matchNo:97,teamA:"France",teamB:"Morocco",flagA:"🇫🇷",flagB:"🇲🇦",venue:"Gillette Stadium, Boston",utcKickoff:"2026-07-09T20:00:00Z",status:"Scheduled",score:null,shortScore:null,winner:null,scorers:[],penalties:null,highlights:[],
-  fact:"A rematch of the iconic 2022 World Cup semifinal, which France won 2-0. Morocco are the first African nation to reach back-to-back World Cup quarterfinals. Mbappé leads the Golden Boot — this match gives him the chance to extend his lead."},
- {id:"qf-2",rnd:"Quarterfinal",matchNo:98,teamA:"Spain",teamB:"Belgium",flagA:"🇪🇸",flagB:"🇧🇪",venue:"SoFi Stadium, Inglewood",utcKickoff:"2026-07-10T19:00:00Z",status:"Scheduled",score:null,shortScore:null,winner:null,scorers:[],penalties:null,highlights:[],
-  fact:"The winner faces France or Morocco in the Dallas semifinal on July 14. Lamine Yamal vs Kevin De Bruyne is the most anticipated individual duel of the quarterfinals. Spain eliminated Portugal in stoppage time; Belgium demolished the USA 4-1."},
- {id:"qf-3",rnd:"Quarterfinal",matchNo:99,teamA:"Norway",teamB:"England",flagA:"🇳🇴",flagB:"🇬🇧",venue:"Hard Rock Stadium, Miami",utcKickoff:"2026-07-11T21:00:00Z",status:"Scheduled",score:null,shortScore:null,winner:null,scorers:[],penalties:null,highlights:[],
-  fact:"Haaland vs Kane — two of the greatest strikers of their generation, on 7 and 6 World Cup goals respectively. The winner faces Argentina or Switzerland in Atlanta on July 15. Norway's win over Brazil was one of the tournament's biggest upsets."},
- {id:"qf-4",rnd:"Quarterfinal",matchNo:100,teamA:"Argentina",teamB:"Switzerland",flagA:"🇦🇷",flagB:"🇨🇭",venue:"Arrowhead Stadium, Kansas City",utcKickoff:"2026-07-12T01:00:00Z",status:"Scheduled",score:null,shortScore:null,winner:null,scorers:[],penalties:null,highlights:[],
-  fact:"Argentina survived an extraordinary 2-0 deficit against Egypt with 11 minutes left — Messi's 21st World Cup goal leading the comeback. Argentina have never lost to Switzerland in a competitive fixture across their entire history."}
-];
+// ── WC 2018 ─────────────────────────────────────────────────────────────────
+2018:{year:2018,host:"Russia",winner:"France",completed:true,
+ finalDate:"15 July 2018",finalVenue:"Luzhniki Stadium, Moscow",
+ updated:"Final: 15 Jul 2018",
+ awards:[
+  {icon:"🏆",label:"Golden Ball",name:"Luka Modrić",country:"Croatia 🇭🇷"},
+  {icon:"🥇",label:"Golden Boot",name:"Harry Kane",country:"England 🇬🇧 · 6 goals"},
+  {icon:"🧤",label:"Golden Glove",name:"Thibaut Courtois",country:"Belgium 🇧🇪"},
+  {icon:"🌟",label:"Best Young Player",name:"Kylian Mbappé",country:"France 🇫🇷"},
+  {icon:"🎖️",label:"FIFA Fair Play",name:"Spain",country:"🇪🇸"}
+ ],
+ leaf:[
+  {id:"m1",rnd:"Round of 16",teamA:"Uruguay",teamB:"Portugal",flagA:"🇺🇾",flagB:"🇵🇹",score:"2-1",winner:"Uruguay",scorers:["Uruguay: Cavani 7',62'","Portugal: Pepe 55'"]},
+  {id:"m2",rnd:"Round of 16",teamA:"France",teamB:"Argentina",flagA:"🇫🇷",flagB:"🇦🇷",score:"4-3",winner:"France",scorers:["France: Griezmann pen 13', Pavard 57', Mbappé 64',68'","Argentina: Di María 41', Mercado 48', Agüero 93'"]},
+  {id:"m3",rnd:"Round of 16",teamA:"Brazil",teamB:"Mexico",flagA:"🇧🇷",flagB:"🇲🇽",score:"2-0",winner:"Brazil",scorers:["Brazil: Neymar 51', Firmino 88'"]},
+  {id:"m4",rnd:"Round of 16",teamA:"Belgium",teamB:"Japan",flagA:"🇧🇪",flagB:"🇯🇵",score:"3-2",winner:"Belgium",scorers:["Belgium: Vertonghen 69', Fellaini 74', Chadli 90+4'","Japan: Inui 48',52'"]},
+  {id:"m5",rnd:"Round of 16",teamA:"Sweden",teamB:"Switzerland",flagA:"🇸🇪",flagB:"🇨🇭",score:"1-0",winner:"Sweden",scorers:["Sweden: Forsberg 66'"]},
+  {id:"m6",rnd:"Round of 16",teamA:"Colombia",teamB:"England",flagA:"🇨🇴",flagB:"🇬🇧",score:"1-1(3-4p)",winner:"England",scorers:["Colombia: Mina 90+3'","England: Kane pen 57'","England win pens 4-3"]},
+  {id:"m7",rnd:"Round of 16",teamA:"Spain",teamB:"Russia",flagA:"🇪🇸",flagB:"🇷🇺",score:"1-1(2-4p)",winner:"Russia",scorers:["Spain: Dzyuba OG 12'","Russia: Dzyuba pen 41'","Russia win pens 4-3"]},
+  {id:"m8",rnd:"Round of 16",teamA:"Croatia",teamB:"Denmark",flagA:"🇭🇷",flagB:"🇩🇰",score:"1-1(3-2p)",winner:"Croatia",scorers:["Croatia: Mandžukić 1'","Denmark: Jørgensen 1'","Croatia win pens 3-2"]}
+ ],
+ r16:[
+  {id:"qf1",rnd:"Quarter-Final",teamA:"Uruguay",teamB:"France",flagA:"🇺🇾",flagB:"🇫🇷",score:"0-2",winner:"France",scorers:["France: Varane 40', Griezmann 61'"]},
+  {id:"qf2",rnd:"Quarter-Final",teamA:"Brazil",teamB:"Belgium",flagA:"🇧🇷",flagB:"🇧🇪",score:"1-2",winner:"Belgium",scorers:["Belgium: Fernandinho OG 13', De Bruyne 31'","Brazil: Renato Augusto 76'"]},
+  {id:"qf3",rnd:"Quarter-Final",teamA:"Sweden",teamB:"England",flagA:"🇸🇪",flagB:"🇬🇧",score:"0-2",winner:"England",scorers:["England: Maguire 30', Dele Alli 58'"]},
+  {id:"qf4",rnd:"Quarter-Final",teamA:"Russia",teamB:"Croatia",flagA:"🇷🇺",flagB:"🇭🇷",score:"2-2(3-4p)",winner:"Croatia",scorers:["Russia: Cheryshev 31', Fernandes 115'","Croatia: Kramarić 39', Vida 101'","Croatia win pens 4-3"]}
+ ],
+ qf:[
+  {id:"sf1",rnd:"Semi-Final",teamA:"France",teamB:"Belgium",flagA:"🇫🇷",flagB:"🇧🇪",score:"1-0",winner:"France",scorers:["France: Umtiti 51'"]},
+  {id:"sf2",rnd:"Semi-Final",teamA:"Croatia",teamB:"England",flagA:"🇭🇷",flagB:"🇬🇧",score:"2-1aet",winner:"Croatia",scorers:["England: Trippier 5'","Croatia: Perišić 68', Mandžukić 109'"]}
+ ],
+ final:{rnd:"Final",teamA:"France",teamB:"Croatia",flagA:"🇫🇷",flagB:"🇭🇷",score:"4-2",winner:"France",scorers:["France: Griezmann pen 38', Pogba 59', Mbappé 65', Mandžukić OG 18'","Croatia: Perišić 28', Mandžukić 69'"]},
+ scorers:[
+  {rank:1,name:"Harry Kane",country:"England",flag:"🇬🇧",goals:6,note:"Golden Boot"},
+  {rank:2,name:"Romelu Lukaku",country:"Belgium",flag:"🇧🇪",goals:4,note:""},
+  {rank:2,name:"Antoine Griezmann",country:"France",flag:"🇫🇷",goals:4,note:"Golden Ball shortlist"},
+  {rank:2,name:"Cristiano Ronaldo",country:"Portugal",flag:"🇵🇹",goals:4,note:"Hat-trick vs Spain"},
+  {rank:2,name:"Denis Cheryshev",country:"Russia",flag:"🇷🇺",goals:4,note:""},
+  {rank:2,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",goals:4,note:"Best Young Player"},
+  {rank:7,name:"Edinson Cavani",country:"Uruguay",flag:"🇺🇾",goals:3,note:""},
+  {rank:7,name:"Artem Dzyuba",country:"Russia",flag:"🇷🇺",goals:3,note:""},
+  {rank:7,name:"Gabriel Jesus",country:"Brazil",flag:"🇧🇷",goals:3,note:""},
+  {rank:7,name:"Luka Modrić",country:"Croatia",flag:"🇭🇷",goals:2,note:"Golden Ball"}
+ ],
+ assists:[
+  {rank:1,name:"Kevin De Bruyne",country:"Belgium",flag:"🇧🇪",assists:3,note:""},
+  {rank:1,name:"Christian Eriksen",country:"Denmark",flag:"🇩🇰",assists:3,note:""},
+  {rank:3,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",assists:2,note:"Best Young Player"},
+  {rank:3,name:"Antoine Griezmann",country:"France",flag:"🇫🇷",assists:2,note:"Golden Ball shortlist"},
+  {rank:3,name:"Harry Kane",country:"England",flag:"🇬🇧",assists:2,note:"Golden Boot"},
+  {rank:3,name:"Ivan Rakitić",country:"Croatia",flag:"🇭🇷",assists:2,note:""},
+  {rank:3,name:"Eden Hazard",country:"Belgium",flag:"🇧🇪",assists:2,note:""},
+  {rank:3,name:"Toni Kroos",country:"Germany",flag:"🇩🇪",assists:2,note:""},
+  {rank:3,name:"Ivan Perišić",country:"Croatia",flag:"🇭🇷",assists:2,note:""},
+  {rank:3,name:"James Rodríguez",country:"Colombia",flag:"🇨🇴",assists:2,note:""}
+ ]},
 
-// ── DRAW QF BOXES ──
-const qfL=document.getElementById('qfLayer');
-const QFBW=116,QFBH=38;
-const QF_BOX_CENTERS=qfA.map(a=>{const pt=polar(Rqf,a),rad=(a-90)*Math.PI/180;return{bx:pt.x+Math.cos(rad)*26,by:pt.y+Math.sin(rad)*26,a};});
-QF.forEach((m,i)=>{
-  const {bx,by}=QF_BOX_CENTERS[i];
-  const done=m.status!=='Scheduled';
-  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-  g.setAttribute('class','qf-node');
-  g.addEventListener('click',()=>openPanel('qf',m.id));
-  const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
-  rect.setAttribute('x',(bx-QFBW/2).toFixed(1));rect.setAttribute('y',(by-QFBH/2).toFixed(1));
-  rect.setAttribute('width',QFBW);rect.setAttribute('height',QFBH);rect.setAttribute('rx',7);
-  rect.setAttribute('class','qf-badge'+(done?' completed':''));
-  g.appendChild(rect);
-  const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
-  lbl.setAttribute('x',(bx+QFBW/2-3).toFixed(1));lbl.setAttribute('y',(by-QFBH/2+6).toFixed(1));
-  lbl.setAttribute('fill','#7a652c');lbl.setAttribute('font-size','7');
-  lbl.setAttribute('text-anchor','end');lbl.setAttribute('dominant-baseline','central');
-  lbl.textContent='QF';g.appendChild(lbl);
-  if(m.shortScore){
-    const st=document.createElementNS('http://www.w3.org/2000/svg','text');
-    st.setAttribute('x',(bx+QFBW/2-4).toFixed(1));st.setAttribute('y',by.toFixed(1));
-    st.setAttribute('class','qf-score-tag');st.setAttribute('text-anchor','end');
-    st.setAttribute('dominant-baseline','central');st.textContent=m.shortScore;g.appendChild(st);
-  }
-  const divl=document.createElementNS('http://www.w3.org/2000/svg','line');
-  divl.setAttribute('x1',(bx-QFBW/2+4).toFixed(1));divl.setAttribute('x2',(bx+QFBW/2-4).toFixed(1));
-  divl.setAttribute('y1',by.toFixed(1));divl.setAttribute('y2',by.toFixed(1));
-  divl.setAttribute('stroke','#2a1f40');divl.setAttribute('stroke-width','1');g.appendChild(divl);
-  function addQFRow(flag,name,isWin,yOff){
-    const ft=document.createElementNS('http://www.w3.org/2000/svg','text');
-    ft.setAttribute('x',(bx-QFBW/2+12).toFixed(1));ft.setAttribute('y',(by+yOff).toFixed(1));
-    ft.setAttribute('text-anchor','middle');ft.setAttribute('dominant-baseline','central');
-    ft.setAttribute('font-size','12');
-    ft.setAttribute('font-family',"'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif");
-    ft.textContent=flag;g.appendChild(ft);
-    const nt=document.createElementNS('http://www.w3.org/2000/svg','text');
-    nt.setAttribute('x',(bx-QFBW/2+23).toFixed(1));nt.setAttribute('y',(by+yOff).toFixed(1));
-    nt.setAttribute('class','qf-name'+(isWin?' win':''));nt.setAttribute('dominant-baseline','central');
-    nt.textContent=name.length>11?name.slice(0,10)+'…':name;g.appendChild(nt);
-  }
-  addQFRow(m.flagA,m.teamA,m.winner===m.teamA,-9);
-  addQFRow(m.flagB,m.teamB,m.winner===m.teamB,9);
-  qfL.appendChild(g);
-});
-function renderLeaders(list,id,key,max){
-  const el=document.getElementById(id);
+// ── WC 2014 ─────────────────────────────────────────────────────────────────
+2014:{year:2014,host:"Brazil",winner:"Germany",completed:true,
+ finalDate:"13 July 2014",finalVenue:"Estádio do Maracanã, Rio de Janeiro",
+ updated:"Final: 13 Jul 2014",
+ awards:[
+  {icon:"🏆",label:"Golden Ball",name:"Lionel Messi",country:"Argentina 🇦🇷"},
+  {icon:"🥇",label:"Golden Boot",name:"James Rodríguez",country:"Colombia 🇨🇴 · 6 goals"},
+  {icon:"🧤",label:"Golden Glove",name:"Manuel Neuer",country:"Germany 🇩🇪"},
+  {icon:"🌟",label:"Best Young Player",name:"Paul Pogba",country:"France 🇫🇷"},
+  {icon:"🎖️",label:"FIFA Fair Play",name:"Colombia",country:"🇨🇴"}
+ ],
+ leaf:[
+  {id:"m1",rnd:"Round of 16",teamA:"Brazil",teamB:"Chile",flagA:"🇧🇷",flagB:"🇨🇱",score:"1-1(3-2p)",winner:"Brazil",scorers:["Brazil: David Luiz 18'","Chile: Sánchez 32'","Brazil win pens 3-2"]},
+  {id:"m2",rnd:"Round of 16",teamA:"Colombia",teamB:"Uruguay",flagA:"🇨🇴",flagB:"🇺🇾",score:"2-0",winner:"Colombia",scorers:["Colombia: Rodríguez pen 28', Bacca 50'"]},
+  {id:"m3",rnd:"Round of 16",teamA:"France",teamB:"Nigeria",flagA:"🇫🇷",flagB:"🇳🇬",score:"2-0",winner:"France",scorers:["France: Pogba 79', Yobo OG 90+2'"]},
+  {id:"m4",rnd:"Round of 16",teamA:"Germany",teamB:"Algeria",flagA:"🇩🇪",flagB:"🇩🇿",score:"2-1aet",winner:"Germany",scorers:["Germany: Schürrle 92', Özil 120+1'","Algeria: Djabou 120'"]},
+  {id:"m5",rnd:"Round of 16",teamA:"Argentina",teamB:"Switzerland",flagA:"🇦🇷",flagB:"🇨🇭",score:"1-0aet",winner:"Argentina",scorers:["Argentina: Di María 118'"]},
+  {id:"m6",rnd:"Round of 16",teamA:"Belgium",teamB:"USA",flagA:"🇧🇪",flagB:"🇺🇸",score:"2-1aet",winner:"Belgium",scorers:["Belgium: De Bruyne 93', Lukaku 105+1'","USA: Green 107'"]},
+  {id:"m7",rnd:"Round of 16",teamA:"Netherlands",teamB:"Mexico",flagA:"🇳🇱",flagB:"🇲🇽",score:"2-1",winner:"Netherlands",scorers:["Netherlands: Sneijder 88', Huntelaar pen 90+2'","Mexico: Dos Santos 48'"]},
+  {id:"m8",rnd:"Round of 16",teamA:"Costa Rica",teamB:"Greece",flagA:"🇨🇷",flagB:"🇬🇷",score:"1-1(5-3p)",winner:"Costa Rica",scorers:["Costa Rica: Ruiz 52'","Greece: Sokratis 91'","Costa Rica win pens 5-3"]}
+ ],
+ r16:[
+  {id:"qf1",rnd:"Quarter-Final",teamA:"Brazil",teamB:"Colombia",flagA:"🇧🇷",flagB:"🇨🇴",score:"2-1",winner:"Brazil",scorers:["Brazil: Thiago Silva 7', David Luiz 69'","Colombia: Rodríguez pen 80'"]},
+  {id:"qf2",rnd:"Quarter-Final",teamA:"France",teamB:"Germany",flagA:"🇫🇷",flagB:"🇩🇪",score:"0-1",winner:"Germany",scorers:["Germany: Hummels 13'"]},
+  {id:"qf3",rnd:"Quarter-Final",teamA:"Argentina",teamB:"Belgium",flagA:"🇦🇷",flagB:"🇧🇪",score:"1-0",winner:"Argentina",scorers:["Argentina: Higuaín 8'"]},
+  {id:"qf4",rnd:"Quarter-Final",teamA:"Netherlands",teamB:"Costa Rica",flagA:"🇳🇱",flagB:"🇨🇷",score:"0-0(4-3p)",winner:"Netherlands",scorers:["0-0 AET · Netherlands win pens 4-3 (Krul saved 2)"]}
+ ],
+ qf:[
+  {id:"sf1",rnd:"Semi-Final",teamA:"Brazil",teamB:"Germany",flagA:"🇧🇷",flagB:"🇩🇪",score:"1-7",winner:"Germany",scorers:["Germany: Müller 11',23', Klose 23', Kroos 24',26', Khedira 29', Schürrle 69',79'","Brazil: Oscar 90'"]},
+  {id:"sf2",rnd:"Semi-Final",teamA:"Netherlands",teamB:"Argentina",flagA:"🇳🇱",flagB:"🇦🇷",score:"0-0(2-4p)",winner:"Argentina",scorers:["0-0 AET · Argentina win pens 4-2"]}
+ ],
+ final:{rnd:"Final",teamA:"Germany",teamB:"Argentina",flagA:"🇩🇪",flagB:"🇦🇷",score:"1-0aet",winner:"Germany",scorers:["Germany: Mario Götze 113'"]},
+ scorers:[
+  {rank:1,name:"James Rodríguez",country:"Colombia",flag:"🇨🇴",goals:6,note:"Golden Boot"},
+  {rank:2,name:"Thomas Müller",country:"Germany",flag:"🇩🇪",goals:5,note:""},
+  {rank:3,name:"Neymar",country:"Brazil",flag:"🇧🇷",goals:4,note:""},
+  {rank:3,name:"Robin van Persie",country:"Netherlands",flag:"🇳🇱",goals:4,note:""},
+  {rank:3,name:"Lionel Messi",country:"Argentina",flag:"🇦🇷",goals:4,note:"Golden Ball"},
+  {rank:6,name:"Karim Benzema",country:"France",flag:"🇫🇷",goals:3,note:""},
+  {rank:6,name:"Gonzalo Higuaín",country:"Argentina",flag:"🇦🇷",goals:3,note:""},
+  {rank:6,name:"Arjen Robben",country:"Netherlands",flag:"🇳🇱",goals:3,note:""},
+  {rank:6,name:"André Schürrle",country:"Germany",flag:"🇩🇪",goals:3,note:""},
+  {rank:6,name:"Enner Valencia",country:"Ecuador",flag:"🇪🇨",goals:3,note:""}
+ ],
+ assists:[
+  {rank:1,name:"Lionel Messi",country:"Argentina",flag:"🇦🇷",assists:4,note:"Golden Ball"},
+  {rank:2,name:"Thomas Müller",country:"Germany",flag:"🇩🇪",assists:3,note:""},
+  {rank:2,name:"James Rodríguez",country:"Colombia",flag:"🇨🇴",assists:3,note:"Golden Boot"},
+  {rank:4,name:"Mesut Özil",country:"Germany",flag:"🇩🇪",assists:2,note:""},
+  {rank:4,name:"Arjen Robben",country:"Netherlands",flag:"🇳🇱",assists:2,note:""},
+  {rank:4,name:"Neymar",country:"Brazil",flag:"🇧🇷",assists:2,note:""},
+  {rank:4,name:"Angel Di María",country:"Argentina",flag:"🇦🇷",assists:2,note:""},
+  {rank:4,name:"Toni Kroos",country:"Germany",flag:"🇩🇪",assists:2,note:""},
+  {rank:4,name:"Ivan Perišić",country:"Croatia",flag:"🇭🇷",assists:2,note:""},
+  {rank:4,name:"Mario Götze",country:"Germany",flag:"🇩🇪",assists:2,note:"Scored final winner"}
+ ]},
+
+// ── WC 2010 ─────────────────────────────────────────────────────────────────
+2010:{year:2010,host:"South Africa",winner:"Spain",completed:true,
+ finalDate:"11 July 2010",finalVenue:"Soccer City, Johannesburg",
+ updated:"Final: 11 Jul 2010",
+ awards:[
+  {icon:"🏆",label:"Golden Ball",name:"Diego Forlán",country:"Uruguay 🇺🇾"},
+  {icon:"🥇",label:"Golden Boot",name:"Thomas Müller",country:"Germany 🇩🇪 · 5 goals"},
+  {icon:"🧤",label:"Golden Glove",name:"Iker Casillas",country:"Spain 🇪🇸"},
+  {icon:"🌟",label:"Best Young Player",name:"Thomas Müller",country:"Germany 🇩🇪"},
+  {icon:"🎖️",label:"FIFA Fair Play",name:"Spain",country:"🇪🇸"}
+ ],
+ leaf:[
+  {id:"m1",rnd:"Round of 16",teamA:"Uruguay",teamB:"South Korea",flagA:"🇺🇾",flagB:"🇰🇷",score:"2-1",winner:"Uruguay",scorers:["Uruguay: Suárez 8', Forlán 80'","S.Korea: Lee Chung-Yong 68'"]},
+  {id:"m2",rnd:"Round of 16",teamA:"USA",teamB:"Ghana",flagA:"🇺🇸",flagB:"🇬🇭",score:"1-2aet",winner:"Ghana",scorers:["USA: Donovan pen 62'","Ghana: Gyan 93+3'"]},
+  {id:"m3",rnd:"Round of 16",teamA:"Germany",teamB:"England",flagA:"🇩🇪",flagB:"🇬🇧",score:"4-1",winner:"Germany",scorers:["Germany: Klose 20', Podolski 32', Müller 67',70'","England: Upson 37' (Lampard disallowed goal 38')"]},
+  {id:"m4",rnd:"Round of 16",teamA:"Argentina",teamB:"Mexico",flagA:"🇦🇷",flagB:"🇲🇽",score:"3-1",winner:"Argentina",scorers:["Argentina: Tévez 26',33', Higuaín 33'","Mexico: Bautista 71'"]},
+  {id:"m5",rnd:"Round of 16",teamA:"Netherlands",teamB:"Slovakia",flagA:"🇳🇱",flagB:"🇸🇰",score:"2-1",winner:"Netherlands",scorers:["Netherlands: Robben 18', Sneijder 84'","Slovakia: Vittek pen 90+4'"]},
+  {id:"m6",rnd:"Round of 16",teamA:"Brazil",teamB:"Chile",flagA:"🇧🇷",flagB:"🇨🇱",score:"3-0",winner:"Brazil",scorers:["Brazil: Juan 35', Fabiano 38',59'"]},
+  {id:"m7",rnd:"Round of 16",teamA:"Paraguay",teamB:"Japan",flagA:"🇵🇾",flagB:"🇯🇵",score:"0-0(5-3p)",winner:"Paraguay",scorers:["0-0 AET · Paraguay win pens 5-3"]},
+  {id:"m8",rnd:"Round of 16",teamA:"Spain",teamB:"Portugal",flagA:"🇪🇸",flagB:"🇵🇹",score:"1-0",winner:"Spain",scorers:["Spain: Villa 63'"]}
+ ],
+ r16:[
+  {id:"qf1",rnd:"Quarter-Final",teamA:"Uruguay",teamB:"Ghana",flagA:"🇺🇾",flagB:"🇬🇭",score:"1-1(4-2p)",winner:"Uruguay",scorers:["Uruguay: Forlán 55'","Ghana: Mensah 82'","Uruguay win pens (Suárez handball, Gyan missed)"]},
+  {id:"qf2",rnd:"Quarter-Final",teamA:"Netherlands",teamB:"Brazil",flagA:"🇳🇱",flagB:"🇧🇷",score:"2-1",winner:"Netherlands",scorers:["Netherlands: Sneijder 53',68'","Brazil: Robinho 10'"]},
+  {id:"qf3",rnd:"Quarter-Final",teamA:"Argentina",teamB:"Germany",flagA:"🇦🇷",flagB:"🇩🇪",score:"0-4",winner:"Germany",scorers:["Germany: Müller 3',67', Klose 23', Friedrich 74'"]},
+  {id:"qf4",rnd:"Quarter-Final",teamA:"Paraguay",teamB:"Spain",flagA:"🇵🇾",flagB:"🇪🇸",score:"0-1",winner:"Spain",scorers:["Spain: Villa pen 83'"]}
+ ],
+ qf:[
+  {id:"sf1",rnd:"Semi-Final",teamA:"Uruguay",teamB:"Netherlands",flagA:"🇺🇾",flagB:"🇳🇱",score:"2-3",winner:"Netherlands",scorers:["Netherlands: Van Bronckhorst 18', Sneijder 70', Robben 73'","Uruguay: Forlán 41', Cavani 90'"]},
+  {id:"sf2",rnd:"Semi-Final",teamA:"Germany",teamB:"Spain",flagA:"🇩🇪",flagB:"🇪🇸",score:"0-1",winner:"Spain",scorers:["Spain: Puyol 73'"]}
+ ],
+ final:{rnd:"Final",teamA:"Netherlands",teamB:"Spain",flagA:"🇳🇱",flagB:"🇪🇸",score:"0-1aet",winner:"Spain",scorers:["Spain: Andrés Iniesta 116'"]},
+ scorers:[
+  {rank:1,name:"Thomas Müller",country:"Germany",flag:"🇩🇪",goals:5,note:"Golden Boot + Best Young"},
+  {rank:1,name:"David Villa",country:"Spain",flag:"🇪🇸",goals:5,note:""},
+  {rank:1,name:"Wesley Sneijder",country:"Netherlands",flag:"🇳🇱",goals:5,note:""},
+  {rank:1,name:"Diego Forlán",country:"Uruguay",flag:"🇺🇾",goals:5,note:"Golden Ball"},
+  {rank:5,name:"Gonzalo Higuaín",country:"Argentina",flag:"🇦🇷",goals:4,note:""},
+  {rank:6,name:"Luís Fabiano",country:"Brazil",flag:"🇧🇷",goals:3,note:""},
+  {rank:6,name:"Asamoah Gyan",country:"Ghana",flag:"🇬🇭",goals:3,note:""},
+  {rank:6,name:"Robert Vittek",country:"Slovakia",flag:"🇸🇰",goals:3,note:""},
+  {rank:6,name:"Miroslav Klose",country:"Germany",flag:"🇩🇪",goals:3,note:""},
+  {rank:6,name:"David Silva",country:"Spain",flag:"🇪🇸",goals:2,note:""}
+ ],
+ assists:[
+  {rank:1,name:"David Villa",country:"Spain",flag:"🇪🇸",assists:3,note:"Golden Boot"},
+  {rank:1,name:"Thomas Müller",country:"Germany",flag:"🇩🇪",assists:3,note:"Golden Boot"},
+  {rank:3,name:"Andrés Iniesta",country:"Spain",flag:"🇪🇸",assists:2,note:"Golden Ball + final winner"},
+  {rank:3,name:"Diego Forlán",country:"Uruguay",flag:"🇺🇾",assists:2,note:"Golden Ball"},
+  {rank:3,name:"Arjen Robben",country:"Netherlands",flag:"🇳🇱",assists:2,note:""},
+  {rank:3,name:"Wesley Sneijder",country:"Netherlands",flag:"🇳🇱",assists:2,note:""},
+  {rank:3,name:"Xavi Hernández",country:"Spain",flag:"🇪🇸",assists:2,note:""},
+  {rank:3,name:"Bastian Schweinsteiger",country:"Germany",flag:"🇩🇪",assists:2,note:""},
+  {rank:3,name:"Mesut Özil",country:"Germany",flag:"🇩🇪",assists:2,note:""},
+  {rank:3,name:"Kaká",country:"Brazil",flag:"🇧🇷",assists:2,note:""}
+ ]},
+
+// ── WC 2006 ─────────────────────────────────────────────────────────────────
+2006:{year:2006,host:"Germany",winner:"Italy",completed:true,
+ finalDate:"9 July 2006",finalVenue:"Olympiastadion, Berlin",
+ updated:"Final: 9 Jul 2006",
+ awards:[
+  {icon:"🏆",label:"Golden Ball",name:"Zinedine Zidane",country:"France 🇫🇷"},
+  {icon:"🥇",label:"Golden Boot",name:"Miroslav Klose",country:"Germany 🇩🇪 · 5 goals"},
+  {icon:"🧤",label:"Golden Glove",name:"Gianluigi Buffon",country:"Italy 🇮🇹"},
+  {icon:"🌟",label:"Best Young Player",name:"Lukas Podolski",country:"Germany 🇩🇪"},
+  {icon:"🎖️",label:"FIFA Fair Play",name:"Brazil",country:"🇧🇷"}
+ ],
+ leaf:[
+  {id:"m1",rnd:"Round of 16",teamA:"Germany",teamB:"Sweden",flagA:"🇩🇪",flagB:"🇸🇪",score:"2-0",winner:"Germany",scorers:["Germany: Podolski 4',12'"]},
+  {id:"m2",rnd:"Round of 16",teamA:"Argentina",teamB:"Mexico",flagA:"🇦🇷",flagB:"🇲🇽",score:"2-1aet",winner:"Argentina",scorers:["Argentina: Crespo 10', Rodríguez 98'","Mexico: Márquez 6'"]},
+  {id:"m3",rnd:"Round of 16",teamA:"England",teamB:"Ecuador",flagA:"🇬🇧",flagB:"🇪🇨",score:"1-0",winner:"England",scorers:["England: Beckham 60'"]},
+  {id:"m4",rnd:"Round of 16",teamA:"Portugal",teamB:"Netherlands",flagA:"🇵🇹",flagB:"🇳🇱",score:"1-0",winner:"Portugal",scorers:["Portugal: Maniche 23'"]},
+  {id:"m5",rnd:"Round of 16",teamA:"Italy",teamB:"Australia",flagA:"🇮🇹",flagB:"🇦🇺",score:"1-0",winner:"Italy",scorers:["Italy: Totti pen 95'"]},
+  {id:"m6",rnd:"Round of 16",teamA:"Switzerland",teamB:"Ukraine",flagA:"🇨🇭",flagB:"🇺🇦",score:"0-0(3-0p)",winner:"Switzerland",scorers:["0-0 AET · Switzerland win pens 3-0"]},
+  {id:"m7",rnd:"Round of 16",teamA:"Brazil",teamB:"Ghana",flagA:"🇧🇷",flagB:"🇬🇭",score:"3-0",winner:"Brazil",scorers:["Brazil: Ronaldo 5', Adriano 45+1', Ze Roberto 84'"]},
+  {id:"m8",rnd:"Round of 16",teamA:"Spain",teamB:"France",flagA:"🇪🇸",flagB:"🇫🇷",score:"1-3",winner:"France",scorers:["France: Ribéry 41', Zidane pen 83', Vieira 90+1'","Spain: Villa 28'"]}
+ ],
+ r16:[
+  {id:"qf1",rnd:"Quarter-Final",teamA:"Germany",teamB:"Argentina",flagA:"🇩🇪",flagB:"🇦🇷",score:"1-1(4-2p)",winner:"Germany",scorers:["Germany: Klose 80'","Argentina: Ayala 49'","Germany win pens 4-2"]},
+  {id:"qf2",rnd:"Quarter-Final",teamA:"Italy",teamB:"Ukraine",flagA:"🇮🇹",flagB:"🇺🇦",score:"3-0",winner:"Italy",scorers:["Italy: Zambrotta 3', Toni 59',69'"]},
+  {id:"qf3",rnd:"Quarter-Final",teamA:"England",teamB:"Portugal",flagA:"🇬🇧",flagB:"🇵🇹",score:"0-0(1-3p)",winner:"Portugal",scorers:["0-0 AET · Portugal win pens (Lampard, Gerrard, Carragher all missed)"]},
+  {id:"qf4",rnd:"Quarter-Final",teamA:"Brazil",teamB:"France",flagA:"🇧🇷",flagB:"🇫🇷",score:"0-1",winner:"France",scorers:["France: Zidane pen 57'"]}
+ ],
+ qf:[
+  {id:"sf1",rnd:"Semi-Final",teamA:"Germany",teamB:"Italy",flagA:"🇩🇪",flagB:"🇮🇹",score:"0-2aet",winner:"Italy",scorers:["Italy: Grosso 119', Del Piero 120+1'"]},
+  {id:"sf2",rnd:"Semi-Final",teamA:"Portugal",teamB:"France",flagA:"🇵🇹",flagB:"🇫🇷",score:"0-1",winner:"France",scorers:["France: Zidane pen 33'"]}
+ ],
+ final:{rnd:"Final",teamA:"Italy",teamB:"France",flagA:"🇮🇹",flagB:"🇫🇷",score:"1-1(5-3p)",winner:"Italy",scorers:["Italy: Materazzi 19'","France: Zidane pen 7' (red card 110')","Italy win pens 5-3"]},
+ scorers:[
+  {rank:1,name:"Miroslav Klose",country:"Germany",flag:"🇩🇪",goals:5,note:"Golden Boot"},
+  {rank:2,name:"Ronaldo",country:"Brazil",flag:"🇧🇷",goals:3,note:"WC all-time record 15 at time"},
+  {rank:2,name:"Hernán Crespo",country:"Argentina",flag:"🇦🇷",goals:3,note:""},
+  {rank:2,name:"Luca Toni",country:"Italy",flag:"🇮🇹",goals:3,note:""},
+  {rank:2,name:"Thierry Henry",country:"France",flag:"🇫🇷",goals:3,note:""},
+  {rank:2,name:"David Villa",country:"Spain",flag:"🇪🇸",goals:3,note:""},
+  {rank:2,name:"Luis García",country:"Mexico",flag:"🇲🇽",goals:3,note:""},
+  {rank:2,name:"Zinedine Zidane",country:"France",flag:"🇫🇷",goals:3,note:"Golden Ball"},
+  {rank:2,name:"Lukas Podolski",country:"Germany",flag:"🇩🇪",goals:3,note:"Best Young Player"},
+  {rank:2,name:"Dirk Kuyt",country:"Netherlands",flag:"🇳🇱",goals:3,note:""}
+ ],
+ assists:[
+  {rank:1,name:"Zinedine Zidane",country:"France",flag:"🇫🇷",assists:3,note:"Golden Ball"},
+  {rank:2,name:"Cristiano Ronaldo",country:"Portugal",flag:"🇵🇹",assists:2,note:""},
+  {rank:2,name:"Ronaldinho",country:"Brazil",flag:"🇧🇷",assists:2,note:""},
+  {rank:2,name:"Thierry Henry",country:"France",flag:"🇫🇷",assists:2,note:""},
+  {rank:2,name:"Lukas Podolski",country:"Germany",flag:"🇩🇪",assists:2,note:"Best Young Player"},
+  {rank:6,name:"Miroslav Klose",country:"Germany",flag:"🇩🇪",assists:1,note:"Golden Boot"},
+  {rank:6,name:"Michael Ballack",country:"Germany",flag:"🇩🇪",assists:1,note:""},
+  {rank:6,name:"Franck Ribéry",country:"France",flag:"🇫🇷",assists:1,note:""},
+  {rank:6,name:"Francesco Totti",country:"Italy",flag:"🇮🇹",assists:1,note:""},
+  {rank:6,name:"Fabio Cannavaro",country:"Italy",flag:"🇮🇹",assists:1,note:"Ballon d'Or 2006"}
+ ]},
+
+// ── WC 2002 ─────────────────────────────────────────────────────────────────
+2002:{year:2002,host:"Korea / Japan",winner:"Brazil",completed:true,
+ finalDate:"30 June 2002",finalVenue:"International Stadium Yokohama",
+ updated:"Final: 30 Jun 2002",
+ awards:[
+  {icon:"🏆",label:"Golden Ball",name:"Oliver Kahn",country:"Germany 🇩🇪"},
+  {icon:"🥇",label:"Golden Boot",name:"Ronaldo",country:"Brazil 🇧🇷 · 8 goals"},
+  {icon:"🧤",label:"Golden Glove",name:"Oliver Kahn",country:"Germany 🇩🇪"},
+  {icon:"🌟",label:"Best Young Player",name:"Landon Donovan",country:"USA 🇺🇸"},
+  {icon:"🎖️",label:"FIFA Fair Play",name:"Belgium",country:"🇧🇪"}
+ ],
+ leaf:[
+  {id:"m1",rnd:"Round of 16",teamA:"Germany",teamB:"Paraguay",flagA:"🇩🇪",flagB:"🇵🇾",score:"1-0",winner:"Germany",scorers:["Germany: Neuville 88'"]},
+  {id:"m2",rnd:"Round of 16",teamA:"England",teamB:"Denmark",flagA:"🇬🇧",flagB:"🇩🇰",score:"3-0",winner:"England",scorers:["England: Ferdinand 5', Owen 22', Heskey 44'"]},
+  {id:"m3",rnd:"Round of 16",teamA:"Sweden",teamB:"Senegal",flagA:"🇸🇪",flagB:"🇸🇳",score:"1-2aet",winner:"Senegal",scorers:["Senegal: Diouf 37', H.Camara 104'(GG)","Sweden: Larsson pen 37'"]},
+  {id:"m4",rnd:"Round of 16",teamA:"Spain",teamB:"Ireland",flagA:"🇪🇸",flagB:"🇮🇪",score:"1-1(3-2p)",winner:"Spain",scorers:["Spain: Morientes 8'","Ireland: Keane 90'","Spain win pens 3-2"]},
+  {id:"m5",rnd:"Round of 16",teamA:"USA",teamB:"Mexico",flagA:"🇺🇸",flagB:"🇲🇽",score:"2-0",winner:"USA",scorers:["USA: McBride 8', Donovan 65'"]},
+  {id:"m6",rnd:"Round of 16",teamA:"Brazil",teamB:"Belgium",flagA:"🇧🇷",flagB:"🇧🇪",score:"2-0",winner:"Brazil",scorers:["Brazil: Rivaldo 67', Ronaldo 87'"]},
+  {id:"m7",rnd:"Round of 16",teamA:"Japan",teamB:"Turkey",flagA:"🇯🇵",flagB:"🇹🇷",score:"0-1",winner:"Turkey",scorers:["Turkey: Davala 12'"]},
+  {id:"m8",rnd:"Round of 16",teamA:"South Korea",teamB:"Italy",flagA:"🇰🇷",flagB:"🇮🇹",score:"2-1aet",winner:"South Korea",scorers:["South Korea: Seol 88', Ahn 117'(GG)","Italy: Vieri 18'"]}
+ ],
+ r16:[
+  {id:"qf1",rnd:"Quarter-Final",teamA:"Germany",teamB:"USA",flagA:"🇩🇪",flagB:"🇺🇸",score:"1-0",winner:"Germany",scorers:["Germany: Ballack 39'"]},
+  {id:"qf2",rnd:"Quarter-Final",teamA:"Senegal",teamB:"Turkey",flagA:"🇸🇳",flagB:"🇹🇷",score:"0-1aet",winner:"Turkey",scorers:["Turkey: İlhan Mansız 94' (golden goal)"]},
+  {id:"qf3",rnd:"Quarter-Final",teamA:"Spain",teamB:"South Korea",flagA:"🇪🇸",flagB:"🇰🇷",score:"0-0(3-5p)",winner:"South Korea",scorers:["0-0 AET · South Korea win pens 5-3 (2 Spain goals disallowed)"]},
+  {id:"qf4",rnd:"Quarter-Final",teamA:"Brazil",teamB:"England",flagA:"🇧🇷",flagB:"🇬🇧",score:"2-1",winner:"Brazil",scorers:["Brazil: Ronaldinho 47',50'(free-kick)","England: Owen 23'"]}
+ ],
+ qf:[
+  {id:"sf1",rnd:"Semi-Final",teamA:"Germany",teamB:"South Korea",flagA:"🇩🇪",flagB:"🇰🇷",score:"1-0",winner:"Germany",scorers:["Germany: Ballack 75' (suspended for final)"]},
+  {id:"sf2",rnd:"Semi-Final",teamA:"Brazil",teamB:"Turkey",flagA:"🇧🇷",flagB:"🇹🇷",score:"1-0",winner:"Brazil",scorers:["Brazil: Ronaldo 49'"]}
+ ],
+ final:{rnd:"Final",teamA:"Germany",teamB:"Brazil",flagA:"🇩🇪",flagB:"🇧🇷",score:"0-2",winner:"Brazil",scorers:["Brazil: Ronaldo 67',79'"]},
+ scorers:[
+  {rank:1,name:"Ronaldo",country:"Brazil",flag:"🇧🇷",goals:8,note:"Golden Boot + WC winner"},
+  {rank:2,name:"Rivaldo",country:"Brazil",flag:"🇧🇷",goals:5,note:""},
+  {rank:2,name:"Miroslav Klose",country:"Germany",flag:"🇩🇪",goals:5,note:"Best Young Player"},
+  {rank:4,name:"Jon Dahl Tomasson",country:"Denmark",flag:"🇩🇰",goals:4,note:""},
+  {rank:5,name:"Landon Donovan",country:"USA",flag:"🇺🇸",goals:3,note:"Best Young Player"},
+  {rank:5,name:"Michael Owen",country:"England",flag:"🇬🇧",goals:3,note:""},
+  {rank:5,name:"Fernando Morientes",country:"Spain",flag:"🇪🇸",goals:3,note:""},
+  {rank:5,name:"Robbie Keane",country:"Ireland",flag:"🇮🇪",goals:3,note:""},
+  {rank:5,name:"El Hadji Diouf",country:"Senegal",flag:"🇸🇳",goals:2,note:""},
+  {rank:5,name:"Clint Mathis",country:"USA",flag:"🇺🇸",goals:2,note:""}
+ ],
+ assists:[
+  {rank:1,name:"Ronaldinho",country:"Brazil",flag:"🇧🇷",assists:4,note:"Famous free-kick vs England"},
+  {rank:2,name:"Ronaldo",country:"Brazil",flag:"🇧🇷",assists:2,note:"Golden Boot"},
+  {rank:2,name:"Rivaldo",country:"Brazil",flag:"🇧🇷",assists:2,note:""},
+  {rank:2,name:"David Beckham",country:"England",flag:"🇬🇧",assists:2,note:""},
+  {rank:2,name:"Robbie Keane",country:"Ireland",flag:"🇮🇪",assists:2,note:""},
+  {rank:6,name:"Michael Ballack",country:"Germany",flag:"🇩🇪",assists:1,note:""},
+  {rank:6,name:"Owen Hargreaves",country:"England",flag:"🇬🇧",assists:1,note:""},
+  {rank:6,name:"Roberto Carlos",country:"Brazil",flag:"🇧🇷",assists:1,note:""},
+  {rank:6,name:"Denilson",country:"Brazil",flag:"🇧🇷",assists:1,note:""},
+  {rank:6,name:"Oliver Neuville",country:"Germany",flag:"🇩🇪",assists:1,note:""}
+ ]}
+
+}; // end DATA
+
+// ── RENDERING ENGINE ─────────────────────────────────────────────────────────
+let YEAR=2026;
+
+function switchTab(y){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',+b.dataset.year===y));
+  YEAR=y; renderTournament(y);
+}
+
+function renderTournament(year){
+  const d=DATA[year]; if(!d) return;
+  const mc=document.getElementById('mainContent');
+  const is26=year===2026;
+
+  // Build HTML structure (no SVG - SVG is added via DOM after)
+  mc.innerHTML=`
+    <header>
+      <div class="eyebrow">${d.host}</div>
+      <h1>FIFA World Cup ${year}</h1>
+      <div class="sub">${d.completed?`🏆 Winner: <strong>${d.winner}</strong>`:''}</div>
+      <div style="margin-top:8px;">
+        <span class="tournament-badge">
+          <span class="badge-dot${d.completed?' grey':''}"></span>
+          ${d.completed?`Final: ${d.finalDate}`:'Live Tournament — '+d.updated}
+        </span>
+      </div>
+      ${d.completed
+        ? `<div class="awards-strip">${(d.awards||[]).map(a=>`<div class="award-card"><span class="award-icon">${a.icon}</span><div class="award-info"><span class="award-label">${a.label}</span><div class="award-name">${a.name}</div><div class="award-country">${a.country}</div></div></div>`).join('')}</div>`
+        : `<div class="meta-row">
+             <span class="updated-pill"><span class="dot"></span><span>Data: ${d.updated}</span></span>
+             <button class="refresh-btn" onclick="location.reload()">⟲ Refresh view</button>
+           </div>`
+      }
+    </header>
+    <div class="layout">
+      <aside class="rail" id="railLeft_${year}">
+        <h2>🥇 Golden Boot <span class="tag">Top Scorers</span></h2>
+        <div id="sc_${year}"></div>
+      </aside>
+      <div class="wheel-wrap">
+        <div class="wheel-stage">
+          <div id="svgWrap_${year}"></div>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-sq" style="background:#0b1a14;border:1px solid var(--green-dim);"></span>${is26?'R32 completed':'R16 completed'}</div>
+          <div class="legend-item"><span class="legend-sq" style="background:#0e1724;border:1px solid var(--line);"></span>Upcoming</div>
+          <div class="legend-item"><span class="legend-sq" style="background:#100b1a;border:1px solid rgba(138,117,48,.5);"></span>QF / SF</div>
+          <div class="legend-item">Tap any box for detail →</div>
+        </div>
+      </div>
+      <aside class="rail" id="railRight_${year}">
+        <h2>🎯 Playmakers <span class="tag">Top Assists</span></h2>
+        <div id="as_${year}"></div>
+      </aside>
+    </div>
+    <footer>Sources: FIFA, ESPN, Sky Sports, Wikipedia</footer>`;
+
+  // Leaderboards
+  buildRail(d.scorers,`sc_${year}`,'goals','GLS');
+  buildRail(d.assists,`as_${year}`,'assists','AST');
+
+  // SVG wheel (all via DOM so namespace is correct)
+  buildSVG(year,d,is26);
+}
+
+function buildRail(list,id,key,lbl){
+  const cont=document.getElementById(id); if(!cont)return;
+  const max=list[0][key];
   list.forEach((p,i)=>{
     const pct=Math.round((p[key]/max)*100);
     const medals=['','🥇','🥈','🥉'];
-    const medal=i<3?medals[i+1]:'';
-    const row=document.createElement('div');row.className='leader-row';
-    row.innerHTML=`<div class="leader-rank">${medal||p.rank}</div><div class="leader-flag">${p.flag}</div><div class="leader-info"><div class="leader-name">${p.name}${p.note?`<span style="font-size:9px;color:var(--text-dimmer);font-weight:400;margin-left:4px;">${p.note}</span>`:''}</div><div class="leader-country">${p.country}</div><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div></div><div class="leader-stat">${p[key]}<span>${key==='goals'?'GLS':'AST'}</span></div>`;
-    el.appendChild(row);
+    const row=document.createElement('div'); row.className='leader-row';
+    row.innerHTML=`<div class="leader-rank">${i<3?medals[i+1]:p.rank}</div>`+
+      `<div class="leader-flag">${p.flag}</div>`+
+      `<div class="leader-info">`+
+        `<div class="leader-name">${p.name}${p.note?`<span style="font-size:9px;color:var(--text-dimmer);margin-left:4px;">${p.note}</span>`:''}</div>`+
+        `<div class="leader-country">${p.country}</div>`+
+        `<div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>`+
+      `</div>`+
+      `<div class="leader-stat">${p[key]}<span>${lbl}</span></div>`;
+    cont.appendChild(row);
   });
 }
-renderLeaders(TOP_SCORERS,'scorersList','goals',MAX_GOALS);
-renderLeaders(TOP_ASSISTS,'assistsList','assists',MAX_ASSISTS);
-document.getElementById('updatedText').textContent=`Data: ${LAST_UPDATED}`;
 
-function toIST(utc){
-  const d=new Date(utc),ist=new Date(d.getTime()+5.5*3600000+d.getTimezoneOffset()*60000);
-  let h=ist.getHours(),mn=ist.getMinutes();const ap=h>=12?'PM':'AM';h=h%12||12;
-  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return{date:`${days[ist.getDay()]}, ${ist.getDate()} ${months[ist.getMonth()]} ${ist.getFullYear()}`,time:`${h}:${String(mn).padStart(2,'0')} ${ap} IST`};
+// ── SVG WHEEL BUILDER ────────────────────────────────────────────────────────
+function buildSVG(year,d,is26){
+  const wrap=document.getElementById(`svgWrap_${year}`); if(!wrap)return;
+
+  // Create SVG root
+  const svg=mk('svg',{viewBox:'0 0 920 920',class:'bracket',id:`svg_${year}`});
+  svg.style.cssText='width:100%;height:auto;display:block;overflow:visible;';
+
+  // Gradient
+  const defs=mk('defs');
+  const grad=mk('radialGradient',{id:`tg_${year}`,cx:'50%',cy:'42%',r:'65%'});
+  grad.appendChild(mk('stop',{offset:'0%','stop-color':'#3d3013'}));
+  grad.appendChild(mk('stop',{offset:'55%','stop-color':'#1c1608'}));
+  grad.appendChild(mk('stop',{offset:'100%','stop-color':'#0c0a06'}));
+  defs.appendChild(grad); svg.appendChild(defs);
+
+  // Layer groups (all DOM-created → correct SVG namespace)
+  const cL=mk('g'); svg.appendChild(cL);
+  const lL=mk('g'); svg.appendChild(lL);
+  const r16L=mk('g'); svg.appendChild(r16L);
+  const qfL=mk('g'); svg.appendChild(qfL);
+
+  // Center
+  const ring=mk('circle',{cx:'460',cy:'460',r:'86',class:'center-ring'});
+  ring.style.fill=`url(#tg_${year})`; svg.appendChild(ring);
+  const ti=mk('text',{x:'460',y:'432','text-anchor':'middle','dominant-baseline':'central','font-size':'28','font-family':EF});
+  ti.textContent='🏆'; svg.appendChild(ti);
+  const wt=mk('text',{x:'460',y:'466',class:'center-label'});
+  wt.textContent=d.completed?d.winner.toUpperCase():'FINAL'; svg.appendChild(wt);
+  if(d.final&&d.final.score){
+    const fs=mk('text',{x:'460',y:'481','text-anchor':'middle','font-size':'8.5','font-family':"'Space Mono',monospace"});
+    fs.style.fill='var(--gold-soft)'; fs.textContent=d.final.score; svg.appendChild(fs);
+  }
+  const dt=mk('text',{x:'460',y:'495',class:'center-sub'}); dt.textContent=d.finalDate; svg.appendChild(dt);
+  const vn=mk('text',{x:'460',y:'507',class:'center-sub'}); vn.textContent=d.finalVenue.split(',')[0]; svg.appendChild(vn);
+
+  // Connectors (leaf spokes only for 2026 which has 16 R32 boxes at leaf ring)
+  drawConnectors(cL, is26);
+
+  if(is26){
+    draw2026(cL,lL,r16L,qfL,d);
+  } else {
+    drawHistorical(cL,lL,r16L,qfL,d);
+  }
+
+  wrap.appendChild(svg);
 }
 
-const overlay=document.getElementById('panelOverlay'),panelEl=document.getElementById('matchPanel');
-function openPanel(stage,id){
-  const datasets={'r32':R32,'r16':R16,'qf':QF};
-  const m=(datasets[stage]||[]).find(x=>x.id===id);
+function drawConnectors(cL, showLeafSpokes=true){
+  function addPath(d2,cls,attr){
+    const p=mk('path',{d:d2,class:cls}); if(attr)Object.entries(attr).forEach(([k,v])=>p.setAttribute(k,v));
+    cL.appendChild(p); return p;
+  }
+  function addDot(a,R){const p=polar(R,a);cL.appendChild(mk('circle',{cx:p.x.toFixed(1),cy:p.y.toFixed(1),r:'3.5',class:'joint-dot'}));}
+
+  const Ri=Rleaf-52; // inner ring for leaf spokes
+  if(showLeafSpokes){
+    leafA.forEach(a=>{
+      const lp=polar(Rleaf,a), ip=polar(Ri,a);
+      addPath(`M ${lp.x.toFixed(1)} ${lp.y.toFixed(1)} L ${ip.x.toFixed(1)} ${ip.y.toFixed(1)}`,'spoke-line',{'data-la':a.toFixed(2)});
+    });
+  }
+  r16A.forEach((a,i)=>{
+    const p1=polar(Ri,leafA[2*i]),p2=polar(Ri,leafA[2*i+1]);
+    addPath(`M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} A ${Ri} ${Ri} 0 0 1 ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`,'tie-line');
+    const mp=polar(Ri,a),ip=polar(Rqf,a);
+    addPath(`M ${mp.x.toFixed(1)} ${mp.y.toFixed(1)} L ${ip.x.toFixed(1)} ${ip.y.toFixed(1)}`,'spoke-line',{'data-r16a':a.toFixed(2)});
+    addDot(a,Ri);
+  });
+  qfA.forEach((a,i)=>{
+    const p1=polar(Rqf,r16A[2*i]),p2=polar(Rqf,r16A[2*i+1]);
+    addPath(`M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} A ${Rqf} ${Rqf} 0 0 1 ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`,'tie-line');
+    const mp=polar(Rqf,a),ip=polar(Rsf,a);
+    addPath(`M ${mp.x.toFixed(1)} ${mp.y.toFixed(1)} L ${ip.x.toFixed(1)} ${ip.y.toFixed(1)}`,'spoke-line',{'data-qfa':a.toFixed(2)});
+    addDot(a,Rqf);
+  });
+  sfA.forEach((a,i)=>{
+    const p1=polar(Rsf,sfA[0]),p2=polar(Rsf,sfA[1]);
+    if(i===0) addPath(`M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} A ${Rsf} ${Rsf} 0 0 1 ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`,'tie-line');
+    const mp=polar(Rsf,a),ip=polar(Rfinal,a);
+    addPath(`M ${mp.x.toFixed(1)} ${mp.y.toFixed(1)} L ${ip.x.toFixed(1)} ${ip.y.toFixed(1)}`,'spoke-line');
+    addDot(a,Rsf);
+  });
+  const fp1=polar(Rfinal,sfA[0]),fp2=polar(Rfinal,sfA[1]);
+  addPath(`M ${fp1.x.toFixed(1)} ${fp1.y.toFixed(1)} A ${Rfinal} ${Rfinal} 0 0 1 ${fp2.x.toFixed(1)} ${fp2.y.toFixed(1)}`,'tie-line');
+}
+
+// Highlight a connector path
+function hlPath(cL,attr,val){
+  cL.querySelectorAll(`path[${attr}]`).forEach(p=>{
+    if(Math.abs(parseFloat(p.getAttribute(attr))-val)<0.1) p.classList.add('won');
+  });
+}
+function hlDot(cL,attr,val){
+  cL.querySelectorAll(`circle.joint-dot`).forEach(c=>{
+    // Find dot at this ring position
+  });
+}
+
+// Draw a match box (rect + divider + two team rows + score tag)
+function drawBox(layer,m,bx,by,BW,BH,badgeCls,nameCls,onCl){
+  const g=mk('g',{class:onCl||'leaf-node'});
+  g.style.cursor='pointer';
+  g.addEventListener('click',()=>showPanel(m));
+  const rect=mkBox(g,bx,by,BW,BH,badgeCls+(m.winner?' completed':'')); g.appendChild(rect);
+  g.appendChild(mkDiv(g,bx,by,BW));
+  if(m.score){
+    const sc=mk('text',{x:(bx+BW/2-4).toFixed(1),y:by.toFixed(1),'text-anchor':'end','dominant-baseline':'central',class:'score-tag'});
+    sc.textContent=m.score; g.appendChild(sc);
+  }
+  teamRow(g,m.flagA,m.teamA,m.winner===m.teamA,bx,by,-9.5,BW,nameCls);
+  teamRow(g,m.flagB,m.teamB,m.winner===m.teamB,bx,by,9.5,BW,nameCls);
+  layer.appendChild(g);
+}
+
+// ── 2026 RENDERING ──
+function draw2026(cL,lL,r16L,qfL,d){
+  const BW=118,BH=40,PUSH=28;
+  // R32 boxes at leaf ring
+  d.leaf.forEach((m,i)=>{
+    const lf=LEAVES[i],rad=(lf.a-90)*Math.PI/180;
+    const bx=lf.x+Math.cos(rad)*PUSH,by=lf.y+Math.sin(rad)*PUSH;
+    if(m.winner) hlPath(cL,'data-la',lf.a);
+    drawBox(lL,m,bx,by,BW,BH,'leaf-badge','leaf-name','leaf-node');
+  });
+  // R16 boxes at r16 ring
+  const R16W=120,R16H=40;
+  (d.r16||[]).forEach((m,i)=>{
+    const{bx,by}=boxPt(Rr16,r16A[i],26);
+    drawBox(r16L,m,bx,by,R16W,R16H,'r16-badge','r16-name','r16-node');
+  });
+  // QF boxes
+  (d.qf||[]).forEach((m,i)=>{
+    if(i>=4)return;
+    const{bx,by}=boxPt(Rqf,qfA[i],24);
+    drawBox(qfL,m,bx,by,116,38,'qf-badge','qf-name','qf-node');
+  });
+}
+
+// ── HISTORICAL RENDERING ──
+function drawHistorical(cL,lL,r16L,qfL,d){
+  // Historical WC: same box design as 2026 but 3 rings instead of 4
+  // R16 boxes at r16 ring (same position as 2026's R16 ring)
+  // QF boxes  at qf ring  (same position as 2026's QF ring)
+  // SF boxes  at sf ring  (same position as 2026's SF ring)
+  // No circle badges, no leaf-level elements — pure box design throughout
+
+  const R16W=120,R16H=40;
+  d.leaf.forEach((m,i)=>{
+    const{bx,by}=boxPt(Rr16,r16A[i],26);
+    if(m.winner){
+      hlPath(cL,'data-r16a',r16A[i]);
+      // Also highlight the tie arc at the leaf ring for this R16 slot
+      hlPath(cL,'data-la',(leafA[i*2]));
+      hlPath(cL,'data-la',(leafA[i*2+1]));
+    }
+    drawBox(r16L,m,bx,by,R16W,R16H,'r16-badge','r16-name','r16-node');
+  });
+  // QF boxes at qf ring
+  (d.r16||[]).slice(0,4).forEach((m,i)=>{
+    const{bx,by}=boxPt(Rqf,qfA[i],24);
+    if(m.winner) hlPath(cL,'data-qfa',qfA[i]);
+    drawBox(qfL,m,bx,by,116,38,'qf-badge','qf-name','qf-node');
+  });
+  // SF boxes at sf ring
+  (d.qf||[]).slice(0,2).forEach((m,i)=>{
+    const{bx,by}=boxPt(Rsf,sfA[i],22);
+    drawBox(qfL,m,bx,by,110,36,'qf-badge','qf-name','qf-node');
+  });
+}
+
+
+function drawTeamBadge(layer,x,y,flag,name,isWin,matchData){
+  const g=mk('g'); g.style.cursor='pointer';
+  g.addEventListener('click',()=>showPanel(matchData));
+  const circ=mk('circle',{cx:x.toFixed(1),cy:y.toFixed(1),r:'19'});
+  circ.style.cssText=`fill:${isWin?'#0e1c10':'#0e1524'};stroke:${isWin?'var(--green-dim)':'var(--line)'};stroke-width:1.2`;
+  g.appendChild(circ);
+  const ft=mk('text',{x:x.toFixed(1),y:(y-5).toFixed(1),'text-anchor':'middle','dominant-baseline':'central','font-size':'14','font-family':EF});
+  ft.textContent=flag; g.appendChild(ft);
+  const nt=mk('text',{x:x.toFixed(1),y:(y+9).toFixed(1),'text-anchor':'middle','dominant-baseline':'central','font-size':'8'});
+  nt.style.cssText=`font-family:'Oswald',sans-serif;fill:${isWin?'var(--gold-soft)':'var(--text-dim)'}`;
+  nt.textContent=name.length>7?name.slice(0,6)+'…':name; g.appendChild(nt);
+  layer.appendChild(g);
+}
+
+// ── MATCH PANEL ──────────────────────────────────────────────────────────────
+const overlay=document.getElementById('panelOverlay');
+const panelEl=document.getElementById('matchPanel');
+
+function showPanel(m){
   if(!m)return;
-  const ist=toIST(m.utcKickoff),sched=m.status==='Scheduled';
-  const scHTML=sched?`<div class="vs-label">VS</div>`:`<div class="score-central">${(m.score||'').split('(')[0].trim()}</div>`;
-  const pensHTML=m.penalties?`<div class="pens-note">Pens: ${m.penalties}</div>`:'';
-  const scorersHTML=(m.scorers&&m.scorers.length)?`<ul class="scorers-list">${m.scorers.map(s=>`<li>${s}</li>`).join('')}</ul>`:`<p class="no-data">Scorers will appear after full time.</p>`;
-  const hlHTML=(m.highlights&&m.highlights.length)?`<ul class="highlights-list">${m.highlights.map(h=>`<li><span class="hl-icon">${h.icon}</span><span class="hl-text">${h.text}</span></li>`).join('')}</ul>`:`<p class="no-data">Highlights available after kick-off.</p>`;
-  const advLine=m.winner?`<div class="panel-adv">✓ ${m.winner} advance to next round</div>`:'';
-  panelEl.innerHTML=`<div class="panel-top"><div><div class="panel-round">${m.rnd} · Match ${m.matchNo}</div>${advLine}</div><button class="close-btn" onclick="closePanel()">✕</button></div><div class="teams-row"><div class="team-block"><span class="team-flag-big">${m.flagA}</span><div class="team-name-big${m.winner===m.teamA?' winner-text':''}">${m.teamA}</div></div>${scHTML}<div class="team-block"><span class="team-flag-big">${m.flagB}</span><div class="team-name-big${m.winner===m.teamB?' winner-text':''}">${m.teamB}</div></div></div>${pensHTML}<span class="status-badge ${sched?'scheduled':'ft'}">${m.status}</span><div class="panel-section"><h3>🕐 Kickoff (IST)</h3><div class="ist-row"><span class="ist-icon">🇮🇳</span><div class="ist-info"><div class="ist-date">${ist.date}</div><div class="ist-time">${ist.time}</div><div class="ist-venue">📍 ${m.venue}</div></div></div></div><div class="panel-section"><h3>⚽ Goalscorers</h3>${scorersHTML}</div><div class="panel-section"><h3>🎬 Key Highlights</h3>${hlHTML}</div><div class="panel-section"><h3>📖 ${sched?'Match Preview':'History Fact'}</h3><div class="fact-box"><span class="fact-tag">Did you know</span>${m.fact}</div></div>`;
+  const done=!!m.winner;
+  const sc=done?`<div class="score-central">${m.score}</div>`:`<div class="vs-label">VS</div>`;
+  const advLine=done?`<div class="panel-adv">✓ ${m.winner} advance</div>`:'';
+  const scorersHTML=done&&m.scorers&&m.scorers.length
+    ?`<ul class="scorers-list">${m.scorers.map(s=>`<li>${s}</li>`).join('')}</ul>`
+    :`<p class="no-data">${done?'No scorer data.':'Match not yet played.'}</p>`;
+  panelEl.innerHTML=`
+    <div class="panel-top">
+      <div><div class="panel-round">${m.rnd||''}</div>${advLine}</div>
+      <button class="close-btn" onclick="closePanel()">✕</button>
+    </div>
+    <div class="teams-row">
+      <div class="team-block"><span class="team-flag-big">${m.flagA}</span><div class="team-name-big${m.winner===m.teamA?' winner-text':''}">${m.teamA}</div></div>
+      ${sc}
+      <div class="team-block"><span class="team-flag-big">${m.flagB}</span><div class="team-name-big${m.winner===m.teamB?' winner-text':''}">${m.teamB}</div></div>
+    </div>
+    <span class="status-badge ${done?'ft':'scheduled'}">${done?'Full Time':'Scheduled'}</span>
+    <div class="panel-section"><h3>⚽ Goalscorers</h3>${scorersHTML}</div>`;
   overlay.classList.add('open');
 }
 function closePanel(){overlay.classList.remove('open');}
 overlay.addEventListener('click',e=>{if(e.target===overlay)closePanel();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanel();});
+
+// Init
+renderTournament(2026);
 </script>
 </body>
 </html>
