@@ -178,6 +178,15 @@
 
   .svgWrap{width:100%;}
   .svgWrap svg{width:100%;height:auto;display:block;overflow:visible;}
+
+  /* SF boxes — golden tint, deeper than QF */
+  .sf-badge{fill:#150d05;stroke:rgba(180,140,30,.55);stroke-width:1.3;transition:stroke .2s,fill .2s;}
+  .sf-node:hover .sf-badge{stroke:var(--gold);fill:#1e1508;}
+  .sf-badge.completed{stroke:var(--green-dim);fill:#0b1a14;}
+  .sf-node:hover .sf-badge.completed{stroke:var(--green);}
+  .sf-name{font-family:'Oswald',sans-serif;font-size:10px;font-weight:500;fill:var(--text-dim);pointer-events:none;}
+  .sf-name.win{fill:var(--gold-soft);font-weight:600;}
+  .sf-score-tag{font-family:'Space Mono',monospace;font-size:7.5px;fill:var(--gold);pointer-events:none;}
   footer{text-align:center;padding:20px 20px 42px;color:var(--text-dimmer);font-size:11px;font-family:'Space Mono',monospace;line-height:1.7;}
 </style>
 </head>
@@ -297,7 +306,7 @@ const DATA={
 // ── WC 2026 ─────────────────────────────────────────────────────────────────
 2026:{year:2026,host:"USA · Canada · Mexico",winner:"TBD",completed:false,
  finalDate:"19 July 2026",finalVenue:"MetLife Stadium, New Jersey",
- updated:"11AM IST, 8 July 2026",awards:null,
+ updated:"11AM IST, 10 July 2026",awards:null,
  leaf:[
   {id:"m1",rnd:"Round of 32",teamA:"South Africa",teamB:"Canada",flagA:"🇿🇦",flagB:"🇨🇦",score:"0-1",winner:"Canada",scorers:["Canada: Eustaquio 92'"]},
   {id:"m2",rnd:"Round of 32",teamA:"Germany",teamB:"Paraguay",flagA:"🇩🇪",flagB:"🇵🇾",score:"1-1(3-4p)",winner:"Paraguay",scorers:["Paraguay: Enciso 40'","Germany: Havertz 51'","Paraguay win 4-3 pens"]},
@@ -327,18 +336,22 @@ const DATA={
   {id:"r16-8",rnd:"Round of 16",teamA:"Switzerland",teamB:"Colombia",flagA:"🇨🇭",flagB:"🇨🇴",score:"0-0(4-3p)",winner:"Switzerland",scorers:["Switzerland win 4-3 on pens"]}
  ],
  qf:[
-  {id:"qf-1",rnd:"Quarter-Final",teamA:"France",teamB:"Morocco",flagA:"🇫🇷",flagB:"🇲🇦",score:null,winner:null,scorers:[]},
+  {id:"qf-1",rnd:"Quarter-Final",teamA:"France",teamB:"Morocco",flagA:"🇫🇷",flagB:"🇲🇦",score:"2-0",winner:"France",scorers:["France: Kylian Mbappé 60' (Doué assist)","France: Ousmane Dembélé 66' (Mbappé assist)"]},
   {id:"qf-2",rnd:"Quarter-Final",teamA:"Spain",teamB:"Belgium",flagA:"🇪🇸",flagB:"🇧🇪",score:null,winner:null,scorers:[]},
   {id:"qf-3",rnd:"Quarter-Final",teamA:"Norway",teamB:"England",flagA:"🇳🇴",flagB:"🇬🇧",score:null,winner:null,scorers:[]},
   {id:"qf-4",rnd:"Quarter-Final",teamA:"Argentina",teamB:"Switzerland",flagA:"🇦🇷",flagB:"🇨🇭",score:null,winner:null,scorers:[]}
  ],
+ sf:[
+  {id:"sf-1",rnd:"Semi-Final",teamA:"France",teamB:"Spain/Belgium winner",flagA:"🇫🇷",flagB:"❓",score:null,winner:null,scorers:[],venue:"AT&T Stadium, Dallas",utcKickoff:"2026-07-14T19:00:00Z"},
+  {id:"sf-2",rnd:"Semi-Final",teamA:"Norway/England winner",teamB:"Arg/Switzerland winner",flagA:"❓",flagB:"❓",score:null,winner:null,scorers:[],venue:"Mercedes-Benz Stadium, Atlanta",utcKickoff:"2026-07-15T19:00:00Z"}
+ ],
  final:null,
  scorers:[
-  {rank:1,name:"Lionel Messi",country:"Argentina",flag:"🇦🇷",goals:8,note:"WC all-time record: 21"},
-  {rank:2,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",goals:7,note:"Leads on assists"},
+  {rank:1,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",goals:8,note:"Leads on assists (3 vs Messi 1)"},
+  {rank:2,name:"Lionel Messi",country:"Argentina",flag:"🇦🇷",goals:8,note:"WC all-time record: 21"},
   {rank:3,name:"Erling Haaland",country:"Norway",flag:"🇳🇴",goals:7,note:"Debut WC"},
   {rank:4,name:"Harry Kane",country:"England",flag:"🇬🇧",goals:6,note:"Eng all-time WC top scorer"},
-  {rank:5,name:"Ousmane Dembélé",country:"France",flag:"🇫🇷",goals:5,note:""},
+  {rank:5,name:"Ousmane Dembélé",country:"France",flag:"🇫🇷",goals:5,note:"Goal vs Morocco QF"},
   {rank:5,name:"Azzedine Ounahi",country:"Morocco",flag:"🇲🇦",goals:5,note:"Brace vs Canada"},
   {rank:7,name:"Mikel Oyarzabal",country:"Spain",flag:"🇪🇸",goals:4,note:""},
   {rank:7,name:"Jude Bellingham",country:"England",flag:"🇬🇧",goals:4,note:"Brace vs Mexico"},
@@ -347,14 +360,14 @@ const DATA={
  ],
  assists:[
   {rank:1,name:"Michael Olise",country:"France",flag:"🇫🇷",assists:6,note:"Equals Pelé 1970 record"},
-  {rank:2,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",assists:3,note:"Golden Boot tiebreaker"},
-  {rank:2,name:"Martin Ødegaard",country:"Norway",flag:"🇳🇴",assists:3,note:""},
-  {rank:2,name:"Ferran Torres",country:"Spain",flag:"🇪🇸",assists:3,note:"Assist for Merino winner"},
-  {rank:5,name:"Bruno Guimarães",country:"Brazil",flag:"🇧🇷",assists:3,note:"Eliminated"},
+  {rank:2,name:"Kylian Mbappé",country:"France",flag:"🇫🇷",assists:4,note:"Golden Boot tiebreaker"},
+  {rank:3,name:"Martin Ødegaard",country:"Norway",flag:"🇳🇴",assists:3,note:""},
+  {rank:3,name:"Ferran Torres",country:"Spain",flag:"🇪🇸",assists:3,note:"Assist for Merino winner"},
+  {rank:3,name:"Bruno Guimarães",country:"Brazil",flag:"🇧🇷",assists:3,note:"Eliminated"},
+  {rank:6,name:"Desire Doué",country:"France",flag:"🇫🇷",assists:2,note:"Assist for Mbappé 60'"},
   {rank:6,name:"Bukayo Saka",country:"England",flag:"🇬🇧",assists:2,note:""},
   {rank:6,name:"Lamine Yamal",country:"Spain",flag:"🇪🇸",assists:2,note:""},
   {rank:6,name:"Erling Haaland",country:"Norway",flag:"🇳🇴",assists:2,note:""},
-  {rank:6,name:"Lisandro Martínez",country:"Argentina",flag:"🇦🇷",assists:2,note:""},
   {rank:6,name:"Azzedine Ounahi",country:"Morocco",flag:"🇲🇦",assists:2,note:""}
  ]},
 
@@ -750,7 +763,9 @@ function renderTournament(year){
         <div class="legend">
           <div class="legend-item"><span class="legend-sq" style="background:#0b1a14;border:1px solid var(--green-dim);"></span>${is26?'R32 completed':'R16 completed'}</div>
           <div class="legend-item"><span class="legend-sq" style="background:#0e1724;border:1px solid var(--line);"></span>Upcoming</div>
-          <div class="legend-item"><span class="legend-sq" style="background:#100b1a;border:1px solid rgba(138,117,48,.5);"></span>QF / SF</div>
+          <div class="legend-item"><span class="legend-sq" style="background:#100b1a;border:1px solid rgba(138,117,48,.5);"></span>Quarter-Final</div>
+          <div class="legend-item"><span class="legend-sq" style="background:#150d05;border:1px solid rgba(180,140,30,.55);"></span>Semi-Final</div>
+          <div class="legend-item"><span class="legend-sq" style="background:#150d05;border:1px solid rgba(180,140,30,.55);"></span>Semi-Final</div>
           <div class="legend-item">Tap any box for detail →</div>
         </div>
       </div>
@@ -836,6 +851,33 @@ function buildSVG(year,d,is26){
   wrap.appendChild(svg);
 }
 
+// Draw SF/Final-style box with semi-final styling
+function drawSFBox(layer,m,bx,by,BW,BH){
+  const g=mk('g',{class:'sf-node'});
+  g.style.cursor='pointer';
+  g.addEventListener('click',()=>showPanel(m));
+  const rect=mkBox(g,bx,by,BW,BH,'sf-badge'+(m.winner?' completed':''));
+  g.appendChild(rect);
+  // SF label top-right
+  const lbl=mk('text',{x:(bx+BW/2-3).toFixed(1),y:(by-BH/2+6).toFixed(1),'text-anchor':'end','dominant-baseline':'central','font-size':'7','font-family':"'Space Mono',monospace"});
+  lbl.style.fill='#7a652c'; lbl.textContent='SF'; g.appendChild(lbl);
+  if(m.score){
+    const sc=mk('text',{x:(bx+BW/2-4).toFixed(1),y:by.toFixed(1),'text-anchor':'end','dominant-baseline':'central',class:'sf-score-tag'});
+    sc.textContent=m.score; g.appendChild(sc);
+  }
+  g.appendChild(mkDiv(g,bx,by,BW));
+  // Team rows
+  const yOff=BH<=36?8.5:9.5;
+  teamRow(g,m.flagA,m.teamA,m.winner===m.teamA,bx,by,-yOff,BW,'sf-name');
+  teamRow(g,m.flagB,m.teamB,m.winner===m.teamB,bx,by,yOff,BW,'sf-name');
+  // Kickoff note below box
+  if(m.note){
+    const nt=mk('text',{x:bx.toFixed(1),y:(by+BH/2+10).toFixed(1),'text-anchor':'middle','dominant-baseline':'central','font-size':'7','font-family':"'Space Mono',monospace"});
+    nt.style.fill='var(--text-dimmer)'; nt.textContent=m.note; g.appendChild(nt);
+  }
+  layer.appendChild(g);
+}
+
 function drawConnectors(cL, showLeafSpokes=true){
   function addPath(d2,cls,attr){
     const p=mk('path',{d:d2,class:cls}); if(attr)Object.entries(attr).forEach(([k,v])=>p.setAttribute(k,v));
@@ -868,7 +910,7 @@ function drawConnectors(cL, showLeafSpokes=true){
     const p1=polar(Rsf,sfA[0]),p2=polar(Rsf,sfA[1]);
     if(i===0) addPath(`M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} A ${Rsf} ${Rsf} 0 0 1 ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`,'tie-line');
     const mp=polar(Rsf,a),ip=polar(Rfinal,a);
-    addPath(`M ${mp.x.toFixed(1)} ${mp.y.toFixed(1)} L ${ip.x.toFixed(1)} ${ip.y.toFixed(1)}`,'spoke-line');
+    addPath(`M ${mp.x.toFixed(1)} ${mp.y.toFixed(1)} L ${ip.x.toFixed(1)} ${ip.y.toFixed(1)}`,'spoke-line',{'data-sfa':a.toFixed(2)});
     addDot(a,Rsf);
   });
   const fp1=polar(Rfinal,sfA[0]),fp2=polar(Rfinal,sfA[1]);
@@ -919,11 +961,34 @@ function draw2026(cL,lL,r16L,qfL,d){
     const{bx,by}=boxPt(Rr16,r16A[i],26);
     drawBox(r16L,m,bx,by,R16W,R16H,'r16-badge','r16-name','r16-node');
   });
-  // QF boxes
+  // QF boxes — highlight spoke when winner known
   (d.qf||[]).forEach((m,i)=>{
     if(i>=4)return;
     const{bx,by}=boxPt(Rqf,qfA[i],24);
+    if(m.winner) hlPath(cL,'data-qfa',qfA[i]);
     drawBox(qfL,m,bx,by,116,38,'qf-badge','qf-name','qf-node');
+  });
+  // SF boxes — show advancing teams at sf ring
+  // SF-1: winner of QF[0]+QF[1] pairs, SF-2: winner of QF[2]+QF[3]
+  const sfPairs=[[0,1],[2,3]];
+  sfPairs.forEach(([qa,qb],si)=>{
+    const mA=d.qf&&d.qf[qa], mB=d.qf&&d.qf[qb];
+    const teamA=mA&&mA.winner?mA.winner:(mA?mA.teamA+'/'+mA.teamB:'TBD');
+    const flagA=mA&&mA.winner?(mA.winner===mA.teamA?mA.flagA:mA.flagB):'❓';
+    const teamB=mB&&mB.winner?mB.winner:(mB?mB.teamA+'/'+mB.teamB:'TBD');
+    const flagB=mB&&mB.winner?(mB.winner===mB.teamA?mB.flagA:mB.flagB):'❓';
+    const sfMatch={
+      id:'sf-'+(si+1),rnd:'Semi-Final',
+      teamA,flagA,teamB,flagB,
+      score:null,winner:null,scorers:[],
+      venue:si===0?'AT&T Stadium, Dallas':'Mercedes-Benz Stadium, Atlanta',
+      note:si===0?'Tue 14 Jul · 3PM ET':'Wed 15 Jul · 3PM ET'
+    };
+    // Highlight SF spoke if both QF matches in this half are done
+    const bothDone=mA&&mA.winner&&mB&&mB.winner;
+    if(bothDone) hlPath(cL,'data-sfa',sfA[si]);
+    const{bx,by}=boxPt(Rsf,sfA[si],22);
+    drawSFBox(qfL,sfMatch,bx,by,110,36);
   });
 }
 
